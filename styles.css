@@ -570,6 +570,75 @@ a{color:inherit}
 }
 .cine__slot.has-img.is-lit{clip-path:inset(0 0 0 0)}
 
+/* ---- full-scene artwork -------------------------------------------------
+   standard.jpg is a whole scene, not a cut-out figure, so the elliptical
+   vignette and the hard 3D turn both work against it. It gets a slow drift
+   instead, and its edges are dissolved so the two columns read as one image.
+
+   The blend is done by MASKING, not by painting background-coloured gradients
+   over the top. The section background is not flat: .cine__bg lays red radial
+   tints under this area, one of them centred at 68% 44%, right under the
+   image. Fading to a solid #040507 therefore landed on a colour that did not
+   match its surroundings and left a visible rectangle. A mask lets whatever is
+   actually behind show through, so it blends whatever the colour behind it.
+
+   The two gradients live on different elements -- horizontal on the image,
+   vertical on its container -- which multiplies them without needing
+   mask-composite. ---------------------------------------------------------- */
+.cine__slot.is-scene img{
+  object-fit:cover;object-position:54% 44%;
+  filter:contrast(1.06) saturate(1.08);
+  animation:sceneDrift 22s ease-in-out infinite alternate;
+  -webkit-mask-image:linear-gradient(to right,
+    transparent 0%,rgba(0,0,0,.18) 10%,rgba(0,0,0,.62) 26%,#000 42%);
+          mask-image:linear-gradient(to right,
+    transparent 0%,rgba(0,0,0,.18) 10%,rgba(0,0,0,.62) 26%,#000 42%);
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  -webkit-mask-size:100% 100%;mask-size:100% 100%;
+}
+@keyframes sceneDrift{
+  from{transform:translate3d(calc(var(--cx,0px) * .45),calc(1% + var(--cy,0px) * .45),0)
+       rotateY(calc(-2deg + var(--cr,0deg) * .3)) scale(1.04)}
+  to  {transform:translate3d(calc(var(--cx,0px) * .45),calc(-1.4% + var(--cy,0px) * .45),0)
+       rotateY(calc(2deg + var(--cr,0deg) * .3))  scale(1.1)}
+}
+
+/* the scene has its own lighting, so the red aura and the buff sweep are off */
+.cine__slot.is-scene::before,
+.cine__slot.is-scene::after{display:none}
+
+.cine__art.is-scene{
+  -webkit-mask-image:linear-gradient(to bottom,
+    transparent 0%,#000 14%,#000 86%,transparent 100%);
+          mask-image:linear-gradient(to bottom,
+    transparent 0%,#000 14%,#000 86%,transparent 100%);
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  -webkit-mask-size:100% 100%;mask-size:100% 100%;
+}
+
+@media (min-width:901px){
+  .cine__art.is-scene{
+    position:absolute;top:0;right:0;bottom:0;left:34%;
+    height:auto;width:auto;margin:0;
+  }
+  .cine__copy{z-index:4}
+}
+
+/* stacked layout: the copy sits under the art, so blend downward instead */
+@media (max-width:900px){
+  .cine__slot.is-scene img{-webkit-mask-image:none;mask-image:none}
+  .cine__art.is-scene{
+    -webkit-mask-image:linear-gradient(to bottom,
+      transparent 0%,#000 12%,#000 58%,transparent 100%);
+            mask-image:linear-gradient(to bottom,
+      transparent 0%,#000 12%,#000 58%,transparent 100%);
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .cine__slot.is-scene img{animation:none}
+}
+
 /* lean in and it sharpens and flares */
 .cine__art:hover .cine__slot.is-on{transform:scale(1.025)}
 .cine__art:hover .cine__slot img{filter:contrast(1.16) saturate(1.3) brightness(1.08)}

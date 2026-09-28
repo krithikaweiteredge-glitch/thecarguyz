@@ -61,16 +61,24 @@ Change one and you must change the other or the glow slides off the lamps.
 
 ## Feature artwork
 
-`assets/art/figure-cut.png` fills the stage in "The Standard". It stays a plain
-image and floats in 3D — `artFloat3d` rotates it on Y and X inside a
-`perspective`, and `art.js` leans it toward the cursor through `--cx`/`--cy`/
-`--cr`. It was briefly rebuilt as a WebGL point cloud; that read as blurry and
-showed the sampling lattice, so the image is kept intact instead.
+"The Standard" uses `assets/art/standard.jpg` — a full scene, character and car
+together, rather than a cut-out figure. `art.js` tags it `is-scene`, which
+switches off the elliptical vignette, the red aura and the buff sweep (the
+scene carries its own lighting) and swaps the hard 3D turn for a slow drift.
 
-`assets/art/figure.png` is the original with its background; `figure-cut.png` is
-the GrabCut cutout. Do not "tidy" that mask with a morphological close plus a
-flood fill — the hair and shoulders enclose the red moon, so filling holes
-swallows the background straight back in.
+On desktop it is positioned absolutely from 34% to the right edge of the stage,
+so it bleeds off the right, top and bottom. Only the edge that meets the copy
+is dissolved, by a gradient to the section background `#040507`. Fading all
+four edges instead just reads as a rectangle with soft corners. Below 900px the
+layout stacks, so the blend runs downward into the copy instead.
+
+`assets/art/figure-cut.png` is the earlier cut-out character, kept as the
+fallback if the scene is missing. It floats in 3D via `artFloat3d` and leans
+toward the cursor through `--cx`/`--cy`/`--cr`. It was briefly rebuilt as a
+WebGL point cloud; that read as blurry and showed the sampling lattice, so the
+image is kept intact instead. Do not "tidy" its GrabCut mask with a
+morphological close plus a flood fill — the hair and shoulders enclose the red
+moon, so filling holes swallows the background straight back in.
 
 ## Before / after slider
 

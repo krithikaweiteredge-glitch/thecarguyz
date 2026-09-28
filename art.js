@@ -13,8 +13,10 @@
   var slot = document.querySelector('.cine__slot');
   if (!slot) return;
 
-  // the cutout first: it carries its own alpha, so it needs no vignette mask
+  // standard.jpg is a full scene rather than a cut-out figure, so it gets a
+  // different treatment: no vignette mask, and it bleeds into the copy column
   var SOURCES = [
+    'assets/art/standard.jpg',
     'assets/art/figure-cut.png',
     'assets/art/figure.png', 'assets/art/figure.jpg',
     'assets/characters/renge.png', 'assets/characters/renge.jpg'
@@ -27,6 +29,10 @@
       slot.innerHTML = '<img src="' + SOURCES[n] + '" alt="" />';
       slot.classList.add('has-img');
       if (SOURCES[n].indexOf('-cut') > -1) slot.classList.add('is-cut');
+      if (SOURCES[n].indexOf('standard') > -1) {
+        slot.classList.add('is-scene');
+        slot.closest('.cine__art').classList.add('is-scene');
+      }
 
       // hold the wipe until the artwork is actually on screen. The clip-path
       // that arms it hides the figure, so anything that stops the observer
