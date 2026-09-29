@@ -399,7 +399,7 @@ a{color:inherit}
 .form__status{grid-column:1/-1;margin:0;min-height:1.2rem;font:600 .85rem/1.4 var(--body);color:var(--accent)}
 
 /* ===================== FOOTER ===================== */
-.foot{border-top:1px solid var(--line);background:var(--bg-2);padding:clamp(3rem,7vw,5rem) var(--gut) 2rem;display:grid;justify-items:center;gap:1.2rem;text-align:center}
+.foot{border-top:1px solid var(--line);background:var(--bg-2);padding:clamp(3rem,7vw,5rem) var(--gut) 2rem;display:grid;grid-template-columns:minmax(0,1fr);justify-items:center;gap:1.2rem;text-align:center}
 .foot__logo{height:92px;width:auto;background:#fff;padding:.5rem .9rem}
 .foot__tag{margin:0;font:600 .72rem/1 var(--body);letter-spacing:.34em;color:var(--muted)}
 .foot__bottom{
@@ -973,14 +973,17 @@ a{color:inherit}
 
 /* ---- FOOTER COLUMNS ---- */
 .foot__cols{
-  max-width:var(--maxw);margin:0 auto clamp(2rem,5vw,3.5rem);
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  /* .foot is a centring grid, so without width:100% this shrinks to the
+     four columns' max-content width and pushes the page sideways on a
+     phone. .foot__bottom carries the same guard for the same reason. */
+  width:100%;max-width:var(--maxw);margin:0 auto clamp(2rem,5vw,3.5rem);
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));
   gap:clamp(1.75rem,4vw,3rem);text-align:left;
 }
 .foot__col h4{
   margin:0 0 1.1rem;font:700 .7rem/1 var(--body);letter-spacing:.26em;text-transform:uppercase;color:var(--accent);
 }
-.foot__col ul{list-style:none;margin:0;padding:0;display:grid;gap:.65rem}
-.foot__col a{text-decoration:none;color:var(--muted);font-size:.93rem;transition:color var(--t)}
+.foot__col ul{list-style:none;margin:0;padding:0;display:grid;gap:.3rem}
+.foot__col a{display:inline-block;padding-block:.35rem;text-decoration:none;color:var(--muted);font-size:.93rem;transition:color var(--t)}
 .foot__col a:hover{color:var(--fg)}
 .foot__col p{margin:0 0 .65rem;color:var(--muted);font-size:.93rem;line-height:1.6}
