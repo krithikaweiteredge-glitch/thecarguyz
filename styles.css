@@ -849,9 +849,15 @@ a{color:inherit}
   max-width:var(--maxw);margin-inline:auto;
   display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;
   background:var(--line);border:1px solid var(--line);
+  /* a two-column frame that will not fit at the end of a row gets pushed to
+     the next one; dense lets the singles behind it backfill the gap, which is
+     otherwise a hole showing the grid's own background */
+  grid-auto-flow:dense;
 }
 .gal__item{position:relative;margin:0;aspect-ratio:4/3;overflow:hidden;background:var(--bg-2)}
-.gal__item--wide{grid-column:span 2}
+/* twice the width, so twice the ratio -- a wide frame has to come out the same
+   height as its neighbours or every row after it goes ragged */
+.gal__item--wide{grid-column:span 2;aspect-ratio:8/3}
 @media (max-width:760px){.gal__item--wide{grid-column:span 1}}
 .gal__item img{
   width:100%;height:100%;object-fit:cover;
