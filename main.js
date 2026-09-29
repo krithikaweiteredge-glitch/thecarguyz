@@ -145,19 +145,27 @@
      5. BEFORE / AFTER SLIDER (range input = keyboard accessible)
      --------------------------------------------------------- */
   var range = document.getElementById('baRange');
-  var after = document.getElementById('baAfter');
-  var handle = document.getElementById('baHandle');
-  if (range) {
+  var ba    = document.getElementById('ba');
+  if (range && ba) {
+    var handle = document.getElementById('baHandle');
+
+    // One custom property feeds the clip, the handle and both tags, so a
+    // drag is a single style write and the opening wipe is just CSS
+    // interpolating the same number.
     var paintBA = function () {
-      var v = range.value;
-      after.style.clipPath = 'inset(0 0 0 ' + v + '%)';
-      handle.style.left = v + '%';
+      ba.style.setProperty('--split', range.value);
     };
-    range.addEventListener('input', paintBA);
-    paintBA();
+
+    // Hand control over on first contact: kill the intro transition mid
+    // flight and retire the nudge ring.
+    var takeOver = function () {
+      armed = true;                 // the drag counts as the intro having run
+      ba.classList.add('is-shown', 'is-touched');
+    };
+
+    range.addEventListener('input', function () { takeOver(); paintBA(); });
 
     // grab anywhere on the panel and drag, not just the thumb
-    var ba = document.getElementById('ba');
     var dragBA = false;
 
     function setFromX(clientX) {
@@ -169,6 +177,8 @@
 
     ba.addEventListener('pointerdown', function (e) {
       dragBA = true;
+      takeOver();
+      ba.classList.add('is-dragging');
       ba.setPointerCapture(e.pointerId);
       setFromX(e.clientX);
     });
@@ -176,8 +186,30 @@
       if (dragBA) setFromX(e.clientX);
     });
     ['pointerup', 'pointercancel'].forEach(function (ev) {
-      ba.addEventListener(ev, function () { dragBA = false; });
+      ba.addEventListener(ev, function () {
+        dragBA = false;
+        ba.classList.remove('is-dragging');
+      });
     });
+
+    // The wipe is the point of the panel, so it should not have already
+    // happened by the time you scroll down to it: hold the line hard right
+    // (all "before") until the panel is properly on screen, then let it run.
+    var armed = false;
+    var arm = function () {
+      if (armed) return;
+      armed = true;
+      range.value = 50;
+      ba.classList.add('is-shown');   // CSS transitions --split 100 -> 50
+    };
+
+    if (!window.IntersectionObserver || matchMedia('(prefers-reduced-motion:reduce)').matches) {
+      arm();
+    } else {
+      new IntersectionObserver(function (entries, obs) {
+        if (entries[0].isIntersecting) { arm(); obs.disconnect(); }
+      }, { threshold: 0.45 }).observe(ba);
+    }
   }
 
   /* ---------------------------------------------------------
@@ -342,29 +374,7 @@
 
 
 
-  /* ---------------------------------------------------------
-     9. THE STANDARD — the page draws itself panel by panel
-     --------------------------------------------------------- */
-  var mangaStrip = document.getElementById('mangaStrip');
-  if (mangaStrip) (function () {
-    var panels = [].slice.call(mangaStrip.children);
-    if (reduced) { panels.forEach(function (p) { p.classList.add('is-in'); }); return; }
-    var io2 = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        e.target.classList.add('is-in');
-        io2.unobserve(e.target);
-      });
-    }, { threshold: 0, rootMargin: '0px 0px -8%' });
-    panels.forEach(function (p) { io2.observe(p); });
 
-    // anything already on screen when the page loads is inked straight away
-    var vh = window.innerHeight || 0;
-    panels.forEach(function (p) {
-      var r = p.getBoundingClientRect();
-      if (r.top < vh && r.bottom > 0) p.classList.add('is-in');
-    });
-  })();
 
   /* ---------------------------------------------------------
      8. WEBGL HERO — stylised car, ceramic clearcoat, aura ring
