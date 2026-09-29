@@ -5,11 +5,108 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>The Car Guyz &mdash; Car Wash, Detailing, PPF &amp; Ceramic Coating</title>
 <meta name="description" content="The Car Guyz — car wash, detailing, paint protection film and ceramic coating. Every technique under one roof. One finish: perfect." />
+<link rel="canonical" href="https://thecarguyz.vercel.app/" />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<meta name="theme-color" content="#0b0c10" />
+
+<!-- what Google, WhatsApp, Instagram and the rest show when the page is shared -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="The Car Guyz" />
+<meta property="og:locale" content="en_IN" />
+<meta property="og:url" content="https://thecarguyz.vercel.app/" />
+<meta property="og:title" content="The Car Guyz &mdash; Car Wash, Detailing, PPF &amp; Ceramic Coating" />
+<meta property="og:description" content="The Car Guyz — car wash, detailing, paint protection film and ceramic coating. Every technique under one roof. One finish: perfect." />
+<meta property="og:image" content="https://thecarguyz.vercel.app/assets/logo.jpg" />
+<meta property="og:image:alt" content="The Car Guyz" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="The Car Guyz &mdash; Car Wash, Detailing, PPF &amp; Ceramic Coating" />
+<meta name="twitter:description" content="The Car Guyz — car wash, detailing, paint protection film and ceramic coating. Every technique under one roof. One finish: perfect." />
+<meta name="twitter:image" content="https://thecarguyz.vercel.app/assets/logo.jpg" />
 <link rel="icon" href="assets/logo.jpg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
+<!-- Structured data: this is what Google reads to build the business panel.
+     Still to add once the real details exist -- deliberately left out rather
+     than filled with placeholders, because invented address/phone data in
+     schema.org markup counts against the site:
+       "telephone": "+91...",
+       "address": { "@type": "PostalAddress", "streetAddress": ...,
+                     "addressLocality": ..., "addressRegion": ...,
+                     "postalCode": ..., "addressCountry": "IN" },
+       "openingHoursSpecification": [...]
+     Add the same details to contact.html, and claim the Google Business
+     Profile -- local search results come from that, not from this file. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "AutoWash",
+        "LocalBusiness"
+      ],
+      "@id": "https://thecarguyz.vercel.app/#business",
+      "name": "The Car Guyz",
+      "description": "Car wash, detailing, paint protection film and ceramic coating.",
+      "url": "https://thecarguyz.vercel.app/",
+      "image": "https://thecarguyz.vercel.app/assets/logo.jpg",
+      "logo": "https://thecarguyz.vercel.app/assets/logo-mark.png",
+      "email": "hello@thecarguyz.com",
+      "priceRange": "$$",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Foam Cannon Wash",
+              "description": "Pre-soak, snow foam, two-bucket contact wash and filtered rinse."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Full Car Detailing",
+              "description": "Interior and exterior detail, top to bottom, inside every seam."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Paint Protection Film",
+              "description": "Self-healing film over the panels that take the hits."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Ceramic Coating",
+              "description": "9H coating for a hydrophobic, UV-stable barrier over the paint."
+            }
+          }
+        ]
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://thecarguyz.vercel.app/#website",
+      "url": "https://thecarguyz.vercel.app/",
+      "name": "The Car Guyz",
+      "publisher": {
+        "@id": "https://thecarguyz.vercel.app/#business"
+      },
+      "inLanguage": "en-IN"
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -228,12 +325,8 @@
       <ul>
         <li><a href="services.html#wash">Foam Cannon Wash</a></li>
         <li><a href="services.html#detailing">Full Car Detailing</a></li>
-        <li><a href="services.html#correction">Paint Correction</a></li>
         <li><a href="services.html#ppf">Paint Protection Film</a></li>
         <li><a href="services.html#ceramic">Ceramic Coating</a></li>
-        <li><a href="services.html#interior">Interior Revival</a></li>
-        <li><a href="services.html#wheels">Tyre &amp; Rim Care</a></li>
-        <li><a href="services.html#headlights">Headlight Restoration</a></li>
       </ul>
     </div>
     <div class="foot__col">
