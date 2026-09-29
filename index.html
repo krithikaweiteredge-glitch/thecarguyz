@@ -28,16 +28,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
 <!-- Structured data: this is what Google reads to build the business panel.
-     Still to add once the real details exist -- deliberately left out rather
-     than filled with placeholders, because invented address/phone data in
-     schema.org markup counts against the site:
+     Locality and hours are real; street address and phone are still
+     missing and are left out rather than filled with placeholders, because
+     invented location data in schema.org markup counts against the site:
        "telephone": "+91...",
-       "address": { "@type": "PostalAddress", "streetAddress": ...,
-                     "addressLocality": ..., "addressRegion": ...,
-                     "postalCode": ..., "addressCountry": "IN" },
-       "openingHoursSpecification": [...]
-     Add the same details to contact.html, and claim the Google Business
-     Profile -- local search results come from that, not from this file. -->
+       "streetAddress" inside address,
+     Add the same to contact.html, and claim the Google Business Profile --
+     local search results come from that, not from this file. -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -54,6 +51,16 @@
       "image": "https://thecarguyz.vercel.app/assets/logo.jpg",
       "logo": "https://thecarguyz.vercel.app/assets/logo-mark.png",
       "email": "hello@thecarguyz.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Hyderabad",
+        "addressRegion": "Telangana",
+        "addressCountry": "IN"
+      },
+      "areaServed": {
+        "@type": "City",
+        "name": "Hyderabad"
+      },
       "priceRange": "$$",
       "hasOfferCatalog": {
         "@type": "OfferCatalog",
@@ -92,7 +99,22 @@
             }
           }
         ]
-      }
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday"
+          ],
+          "opens": "09:00",
+          "closes": "20:00"
+        }
+      ]
     },
     {
       "@type": "WebSite",
