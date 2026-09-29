@@ -12,7 +12,8 @@
   var loader = document.getElementById('loader');
   var loadBar = document.getElementById('loadBar');
   var pct = 0;
-  var tick = setInterval(function () {
+  if (!loader || !loadBar) { document.body.classList.add('is-ready'); }
+  var tick = !loader ? null : setInterval(function () {
     pct = Math.min(100, pct + Math.random() * 18);
     loadBar.style.width = pct + '%';
     if (pct >= 100) {
@@ -40,9 +41,10 @@
   var menu = document.getElementById('mobilemenu');
 
   window.addEventListener('scroll', function () {
-    nav.classList.toggle('is-stuck', window.scrollY > 40);
+    if (nav) nav.classList.toggle('is-stuck', window.scrollY > 40);
   }, { passive: true });
 
+  if (burger && menu) {
   burger.addEventListener('click', function () {
     var open = burger.getAttribute('aria-expanded') === 'true';
     burger.setAttribute('aria-expanded', String(!open));
@@ -62,6 +64,7 @@
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && !menu.hidden) burger.click();
   });
+  }
 
   /* ---------------------------------------------------------
      3. SCROLL REVEAL + COUNTERS + STAT BARS
@@ -80,7 +83,7 @@
 
       io.unobserve(entry.target);
     });
-  }, { threshold: 0.18, rootMargin: '0px 0px -60px' });
+  }, { threshold: 0, rootMargin: '0px 0px -12%' });
 
   document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
 
@@ -238,6 +241,7 @@
     if (old) old.remove();
   }
 
+  if (form) {
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     status.textContent = '';
@@ -275,8 +279,40 @@
       if (input.getAttribute('aria-invalid') === 'true' && input.value.trim()) clearError(input);
     });
   });
+  }
 
-  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  /* ---------------------------------------------------------
+     7b. MEDIA BAND — swap the poster photograph for the shop's own
+     footage, but only once we know the file is actually there, so a
+     site without a video never fires a 404.
+     --------------------------------------------------------- */
+  document.querySelectorAll('.media__frame[data-video]').forEach(function (frame) {
+    var src = frame.dataset.video;
+    var poster = frame.querySelector('img');
+    if (!poster || reduced || !window.fetch) return;
+
+    fetch(src, { method: 'HEAD' }).then(function (res) {
+      if (!res.ok) return;
+      var v = document.createElement('video');
+      v.src = src;
+      v.poster = poster.currentSrc || poster.src;
+      v.muted = true; v.loop = true; v.playsInline = true;
+      v.setAttribute('muted', '');
+      v.setAttribute('playsinline', '');
+      v.setAttribute('aria-hidden', 'true');
+
+      // only start it once the band scrolls into view, and stop when it leaves
+      v.addEventListener('loadeddata', function () { poster.replaceWith(v); });
+      new IntersectionObserver(function (e) {
+        if (e[0].isIntersecting) { v.play().catch(function () {}); }
+        else { v.pause(); }
+      }, { threshold: 0.2 }).observe(frame);
+    }).catch(function () { /* no footage yet -- the poster stays */ });
+  });
+
+  var yr = document.getElementById('yr');
+  if (yr) yr.textContent = new Date().getFullYear();
 
   /* ---------------------------------------------------------
      8. WEBGL HERO — stylised car, ceramic clearcoat, aura ring

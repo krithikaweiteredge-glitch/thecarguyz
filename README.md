@@ -1,7 +1,7 @@
 # The Car Guyz — website
 
-Anime-styled single-page site for a car wash / detailing / PPF business.
-Static HTML, CSS and JS. No build step, no dependencies to install.
+Anime-styled site for a car wash / detailing / PPF business, split across six
+tabbed pages. Static HTML, CSS and JS. No build step, no dependencies to install.
 
 ## Run it
 
@@ -15,12 +15,22 @@ npx -y serve -l 4321 .
 
 | File | What's in it |
 |---|---|
-| `index.html` | All page content and the four crew SVGs |
+| `index.html` | Home — hero, technique teasers, The Standard, before/after |
+| `about.html` | The shop, the five-stage process, the crew |
+| `services.html` | All six techniques written out in full, plus the extras |
+| `gallery.html` | Before/after slider, video band, photographed stages |
+| `pricing.html` | The three grades and the FAQ |
+| `contact.html` | Booking form, hours, address |
 | `styles.css` | Design tokens + every style rule |
-| `main.js` | Loader, nav, scroll reveals, counters, tilt, slider, form, WebGL hero |
+| `main.js` | Loader, nav, scroll reveals, counters, tilt, slider, form, media band, WebGL hero |
 | `assets/logo.jpg` | Your logo, as supplied (nav + footer) |
 | `assets/logo-mark.png` | Dark-mode build of it, for the loader |
 | `design-system/the-car-guyz/MASTER.md` | Generated design system this was built against |
+
+Every page shares the same nav, footer and stylesheet. The nav marks the
+current tab with `aria-current="page"`, which is what draws the red underline —
+so adding a page means adding it to the `<nav>` and the mobile menu on all six
+files.
 
 Three.js r128 loads from a CDN — the page needs internet on first load.
 If WebGL is unavailable the hero falls back to the static gradient background.
@@ -89,3 +99,15 @@ must be the same size and framing or the two halves will not line up.
 ## Language
 
 English only. No Japanese text anywhere in the markup or styles.
+
+## Photography and video
+
+The service, gallery and banner photographs are hotlinked from Pexels (free to
+use, no attribution required). They are there so the site looks finished before
+the shop's own shots exist — swap the `images.pexels.com` URLs for your own
+files under `assets/` as the real photos come in.
+
+The video band on each page shows its poster photograph until you drop real
+footage at `assets/video/wash.mp4`. `main.js` HEAD-checks that path on load and
+only then builds a `<video>` element, so a site with no footage never requests a
+file that is not there. See `assets/video/README.txt` for the encoding to use.

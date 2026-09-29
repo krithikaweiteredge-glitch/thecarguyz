@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Gallery &mdash; The Car Guyz</title>
+<meta name="description" content="Before and after, foam, correction, coating and film. The receipts from the bay." />
+<link rel="icon" href="assets/logo.jpg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<!-- ================= NAV ================= -->
+<header class="nav" id="nav">
+  <a class="nav__brand" href="index.html"><img src="assets/logo.jpg" alt="The Car Guyz home" /></a>
+  <nav class="nav__links" aria-label="Main">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="services.html">Services</a>
+    <a href="gallery.html" aria-current="page">Gallery</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <a class="btn btn--sm nav__cta" href="contact.html">Book Now <span aria-hidden="true">&rarr;</span></a>
+  <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobilemenu"><i></i><i></i><i></i></button>
+</header>
+
+<div class="mobilemenu" id="mobilemenu" hidden>
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="services.html">Services</a>
+  <a href="gallery.html" aria-current="page">Gallery</a>
+  <a href="pricing.html">Pricing</a>
+  <a href="contact.html">Contact</a>
+  <a href="contact.html" class="mobilemenu__cta">Book Now</a>
+</div>
+
+<!-- ================= PAGE BANNER ================= -->
+<section class="phero" style="--shot:url('https://images.pexels.com/photos/6872173/pexels-photo-6872173.jpeg?auto=compress&cs=tinysrgb&w=1400')">
+  <div class="phero__in">
+    <p class="crumbs"><a href="index.html">Home</a> / <span>Gallery</span></p>
+    <p class="kicker" style="margin-top:1.4rem"><span class="dot" aria-hidden="true"></span>RECEIPTS</p>
+    <h1>DRAG THE LINE.<br /><em>SEE THE DIFFERENCE.</em></h1>
+    <p>Left is what rolled in. Right is what rolled out. No filters, no studio lighting, no borrowed photos.</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="work">
+  <header class="sec__head">
+    <p class="kicker reveal"><span class="dot" aria-hidden="true"></span>01 &mdash; BEFORE / AFTER</p>
+    <h2 class="sec__title reveal">SAME CAR.<br /><em>SAME DAY.</em></h2>
+    <p class="sec__lead reveal">Grab the handle and drag it across.</p>
+  </header>
+
+  <div class="ba reveal" id="ba">
+    <div class="ba__before"><span class="ba__tag">BEFORE</span></div>
+    <div class="ba__after" id="baAfter"><span class="ba__tag ba__tag--r">AFTER</span></div>
+    <input class="ba__range" id="baRange" type="range" min="0" max="100" value="50" aria-label="Reveal the after image" />
+    <span class="ba__handle" id="baHandle" aria-hidden="true"><i></i></span>
+  </div>
+</section>
+
+<!-- ================= MEDIA BAND ================= -->
+<section class="media">
+  <div class="media__frame" data-video="assets/video/wash.mp4">
+    <img src="https://images.pexels.com/photos/6872176/pexels-photo-6872176.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="A car being washed in the bay" />
+    <div class="media__cap">
+      <div>
+        <h3>THE WASH, <em>UNCUT</em></h3>
+        <p>Pre-soak, snow foam, two-bucket contact wash, filtered rinse. Shot on the floor, not in a studio.</p>
+      </div>
+      <p class="media__live"><i aria-hidden="true"></i>WATCH</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <header class="sec__head">
+    <p class="kicker reveal"><span class="dot" aria-hidden="true"></span>02 &mdash; THE FLOOR</p>
+    <h2 class="sec__title reveal">EVERY STAGE,<br /><em>PHOTOGRAPHED</em></h2>
+    <p class="sec__lead reveal">Hover a frame to see it in full colour.</p>
+  </header>
+
+  <div class="gal">
+    <figure class="gal__item gal__item--wide reveal">
+      <img src="https://images.pexels.com/photos/6872161/pexels-photo-6872161.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Snow foam dwelling before the contact wash" loading="lazy" />
+      <figcaption><b>FOAM SOVEREIGN</b>Snow foam dwelling before the contact wash</figcaption>
+    </figure>
+    <figure class="gal__item reveal">
+      <img src="https://images.pexels.com/photos/6872164/pexels-photo-6872164.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Stage-one cut under inspection light" loading="lazy" />
+      <figcaption><b>MIRROR CUTTER</b>Stage-one cut under inspection light</figcaption>
+    </figure>
+    <figure class="gal__item reveal">
+      <img src="https://images.pexels.com/photos/6872173/pexels-photo-6872173.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Water beading on a freshly coated bonnet" loading="lazy" />
+      <figcaption><b>THE BARRIER</b>Water beading on a freshly coated bonnet</figcaption>
+    </figure>
+    <figure class="gal__item reveal">
+      <img src="https://images.pexels.com/photos/5233285/pexels-photo-5233285.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Hot-water extraction on a fabric seat" loading="lazy" />
+      <figcaption><b>DEEP CLEANSE</b>Hot-water extraction on a fabric seat</figcaption>
+    </figure>
+    <figure class="gal__item reveal">
+      <img src="https://images.pexels.com/photos/6872158/pexels-photo-6872158.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Lens polished back to optical clarity" loading="lazy" />
+      <figcaption><b>FLASHPOINT</b>Lens polished back to optical clarity</figcaption>
+    </figure>
+    <figure class="gal__item reveal">
+      <img src="https://images.pexels.com/photos/6872160/pexels-photo-6872160.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Filtered rinse and water-blade on glass" loading="lazy" />
+      <figcaption><b>CLARITY PASS</b>Filtered rinse and water-blade on glass</figcaption>
+    </figure>
+    <figure class="gal__item gal__item--wide reveal">
+      <img src="https://images.pexels.com/photos/6872152/pexels-photo-6872152.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Pre-film wash in the sealed bay" loading="lazy" />
+      <figcaption><b>ARMOUR WEAVE</b>Pre-film wash in the sealed bay</figcaption>
+    </figure>
+    <figure class="gal__item reveal">
+      <img src="https://images.pexels.com/photos/3806249/pexels-photo-3806249.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Barrels and arches decontaminated properly" loading="lazy" />
+      <figcaption><b>WHEELS OFF</b>Barrels and arches decontaminated properly</figcaption>
+    </figure>
+    <figure class="gal__item reveal">
+      <img src="https://images.pexels.com/photos/6872157/pexels-photo-6872157.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Fresh mitt, grit guards, zero swirls" loading="lazy" />
+      <figcaption><b>TWO-BUCKET</b>Fresh mitt, grit guards, zero swirls</figcaption>
+    </figure>
+    <figure class="gal__item reveal">
+      <img src="https://images.pexels.com/photos/6872155/pexels-photo-6872155.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Lower panels softened before anything touches paint" loading="lazy" />
+      <figcaption><b>PRE-SOAK</b>Lower panels softened before anything touches paint</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section quotes">
+  <blockquote class="quote reveal"><p>&ldquo;Picked it up at night under the shop lights and genuinely stood there for a minute. Nine-year-old paint looking wet.&rdquo;</p><cite>Arjun M. &middot; Octavia vRS</cite></blockquote>
+  <blockquote class="quote reveal"><p>&ldquo;Got the full-front PPF before a highway trip. Came back with stone strikes on the film and nothing on the paint. Paid for itself.&rdquo;</p><cite>Priya S. &middot; Thar</cite></blockquote>
+  <blockquote class="quote reveal"><p>&ldquo;They showed me the paint-depth readings and talked me out of a second polish. First detailer I have actually trusted.&rdquo;</p><cite>Rohit K. &middot; 3 Series</cite></blockquote>
+</section>
+
+</main>
+
+<!-- ================= CTA STRIP ================= -->
+<section class="strip" style="--shot:url('https://images.pexels.com/photos/6872161/pexels-photo-6872161.jpeg?auto=compress&cs=tinysrgb&w=1400')">
+  <h2>WANT YOUR CAR <em>ON THIS PAGE?</em></h2>
+  <p>Book a slot and we will shoot the before and after for you &mdash; whether or not it ends up here.</p>
+  <div class="strip__cta">
+    <a class="btn" href="contact.html">Book a Slot <span aria-hidden="true">&rarr;</span></a>
+    <a class="btn btn--ghost" href="tel:+910000000000">Call the Bay</a>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="foot">
+  <div class="foot__cols">
+    <div class="foot__col">
+      <img class="foot__logo" src="assets/logo.jpg" alt="The Car Guyz" style="margin-bottom:1rem" />
+      <p>Car wash, detailing, paint protection film and ceramic coating. Four techniques, one finish: perfect.</p>
+    </div>
+    <div class="foot__col">
+      <h4>Main Links</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="foot__col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="services.html#wash">Foam Cannon Wash</a></li>
+        <li><a href="services.html#correction">Paint Correction</a></li>
+        <li><a href="services.html#ppf">Paint Protection Film</a></li>
+        <li><a href="services.html#ceramic">Ceramic Coating</a></li>
+        <li><a href="services.html#interior">Interior Revival</a></li>
+        <li><a href="services.html#headlights">Headlight Restoration</a></li>
+      </ul>
+    </div>
+    <div class="foot__col">
+      <h4>Contact Info</h4>
+      <p><a href="tel:+910000000000">+91 00000 00000</a></p>
+      <p><a href="mailto:hello@thecarguyz.com">hello@thecarguyz.com</a></p>
+      <p>Mon&ndash;Sat &middot; 9:00&ndash;20:00<br />Sunday &middot; by appointment</p>
+    </div>
+  </div>
+  <p class="foot__tag">CAR WASH | DETAILING | PPF | MORE</p>
+  <p class="foot__bottom">
+    <span>&copy; <span id="yr"></span> The Car Guyz. All rights reserved.</span>
+    <span>Built for people who actually care about their car.</span>
+  </p>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
