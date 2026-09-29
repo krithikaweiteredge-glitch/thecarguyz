@@ -83,9 +83,32 @@
 
       io.unobserve(entry.target);
     });
-  }, { threshold: 0, rootMargin: '0px 0px -12%' });
+  }, { threshold: 0, rootMargin: '0px 0px 240px' });
 
-  document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+  var reveals = [].slice.call(document.querySelectorAll('.reveal'));
+  reveals.forEach(function (el) { io.observe(el); });
+
+  // Scrolling fast can outrun the observer's callback, which leaves a band of
+  // blank page where a section should be. This sweeps anything already inside
+  // the viewport and reveals it on the spot, no fade, so there is nothing to
+  // outrun; it stops costing anything once everything has been revealed.
+  var sweeping = false;
+  function sweepReveals() {
+    sweeping = false;
+    var vh = window.innerHeight || 0;
+    for (var i = reveals.length - 1; i >= 0; i--) {
+      var el = reveals[i];
+      if (el.classList.contains('in')) { reveals.splice(i, 1); continue; }
+      var r = el.getBoundingClientRect();
+      if (r.top < vh && r.bottom > 0) { el.classList.add('in', 'is-instant'); io.unobserve(el); }
+    }
+    if (!reveals.length) window.removeEventListener('scroll', onScrollSweep);
+  }
+  function onScrollSweep() {
+    if (!sweeping) { sweeping = true; requestAnimationFrame(sweepReveals); }
+  }
+  window.addEventListener('scroll', onScrollSweep, { passive: true });
+  sweepReveals();
 
   function countUp(el) {
     var target = parseInt(el.dataset.count, 10);
@@ -313,6 +336,122 @@
 
   var yr = document.getElementById('yr');
   if (yr) yr.textContent = new Date().getFullYear();
+
+
+
+  /* ---------------------------------------------------------
+     9. THE STANDARD — the process artwork, region by region
+
+     The artwork is one flat image, so a region is just a rectangle
+     on it. Lighting one means moving the stage's --ax/--ay/--aw/--ah
+     onto that rectangle; the lifted copy and the frame follow in CSS.
+     Scrolling the section walks through the nine regions, hovering
+     takes it over, and a click zooms the artwork into that panel.
+     --------------------------------------------------------- */
+  var chStage = document.getElementById('chStage');
+  if (chStage) (function () {
+    var hots  = [].slice.call(chStage.querySelectorAll('.chapters__hot'));
+    var dots  = [].slice.call(document.querySelectorAll('.chapters__dot'));
+    var cards = [].slice.call(document.querySelectorAll('.chapters__card'));
+    var bar   = document.querySelector('.chapters__bar i');
+    var closer = chStage.querySelector('.chapters__close');
+    var figure = chStage.closest('.chapters');
+    var n = hots.length;
+    var current = -1, zoomed = -1, held = false, ticking = false;
+
+    function rect(i) {
+      var st = hots[i].style;
+      return {
+        x: parseFloat(st.getPropertyValue('--x')),
+        y: parseFloat(st.getPropertyValue('--y')),
+        w: parseFloat(st.getPropertyValue('--w')),
+        h: parseFloat(st.getPropertyValue('--h'))
+      };
+    }
+
+    function show(i) {
+      i = Math.max(0, Math.min(n - 1, i));
+      if (i === current) return;
+      current = i;
+      var r = rect(i);
+      chStage.style.setProperty('--ax', r.x + '%');
+      chStage.style.setProperty('--ay', r.y + '%');
+      chStage.style.setProperty('--aw', r.w + '%');
+      chStage.style.setProperty('--ah', r.h + '%');
+      chStage.classList.add('is-live');
+      cards.forEach(function (c, k) { c.classList.toggle('is-on', k === i); });
+      dots.forEach(function (d, k) { d.setAttribute('aria-selected', String(k === i)); });
+      if (bar) bar.style.width = ((i + 1) / n * 100) + '%';
+    }
+
+    /* --- zoom: scale the artwork so one region fills the frame --- */
+    function zoom(i) {
+      var r = rect(i);
+      // fit the whole region, then centre it: translate is applied before the
+      // scale, so shifting the region's centre onto 50/50 is what lands it
+      var s = Math.min(100 / r.w, 100 / r.h) * 0.92;
+      chStage.style.setProperty('--s', s.toFixed(3));
+      chStage.style.setProperty('--tx', (50 - (r.x + r.w / 2)).toFixed(2) + '%');
+      chStage.style.setProperty('--ty', (50 - (r.y + r.h / 2)).toFixed(2) + '%');
+      chStage.classList.add('is-zoom');
+      zoomed = i;
+      closer.hidden = false;
+      show(i);
+    }
+    function unzoom() {
+      chStage.classList.remove('is-zoom');
+      chStage.style.setProperty('--s', '1');
+      chStage.style.setProperty('--tx', '0%');
+      chStage.style.setProperty('--ty', '0%');
+      zoomed = -1;
+      closer.hidden = true;
+    }
+
+    hots.concat(dots).forEach(function (el) {
+      var i = parseInt(el.dataset.ch, 10);
+      el.addEventListener('click', function () {
+        held = true;
+        if (zoomed === i) unzoom(); else zoom(i);
+      });
+      el.addEventListener('mouseenter', function () { held = true; if (zoomed < 0) show(i); });
+      el.addEventListener('focus',      function () { held = true; if (zoomed < 0) show(i); });
+    });
+
+    closer.addEventListener('click', function () { unzoom(); });
+    figure.addEventListener('mouseleave', function () { held = false; });
+
+    figure.addEventListener('keydown', function (e) {
+      var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (d) {
+        e.preventDefault(); held = true;
+        var next = Math.max(0, Math.min(n - 1, current + d));
+        if (zoomed > -1) zoom(next); else show(next);
+        hots[next].focus();
+      } else if (e.key === 'Escape' && zoomed > -1) {
+        unzoom(); hots[current].focus();
+      } else if (e.key === 'Home') { e.preventDefault(); held = true; show(0); }
+      else if (e.key === 'End')   { e.preventDefault(); held = true; show(n - 1); }
+    });
+
+    /* --- scrolling the section walks through the regions --- */
+    function fromScroll() {
+      ticking = false;
+      if (held || zoomed > -1) return;
+      var r = chStage.getBoundingClientRect();
+      var vh = window.innerHeight || 1;
+      // 0 as the artwork arrives, 1 as it leaves
+      var p = (vh * 0.85 - r.top) / (r.height + vh * 0.45);
+      p = Math.max(0, Math.min(0.999, p));
+      show(Math.floor(p * n));
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(fromScroll); }
+    }, { passive: true });
+    window.addEventListener('resize', fromScroll, { passive: true });
+
+    show(0);
+    fromScroll();
+  })();
 
   /* ---------------------------------------------------------
      8. WEBGL HERO — stylised car, ceramic clearcoat, aura ring

@@ -409,7 +409,9 @@ a{color:inherit}
 }
 
 /* ===================== REVEAL ===================== */
-.reveal{opacity:0;transform:translateY(34px);transition:opacity .75s cubic-bezier(.2,.7,.3,1),transform .75s cubic-bezier(.2,.7,.3,1)}
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .55s cubic-bezier(.2,.7,.3,1),transform .55s cubic-bezier(.2,.7,.3,1)}
+/* caught by the fast-scroll sweep: already on screen, so it just appears */
+.reveal.is-instant{transition:none}
 .reveal.in{opacity:1;transform:none}
 
 /* ===================== RESPONSIVE ===================== */
@@ -435,90 +437,17 @@ a{color:inherit}
 /* ============================================================
    CINEMATIC CREW — pinned, scroll-scrubbed
    ============================================================ */
-.cine{position:relative}
-.cine__stage{
-  position:relative;min-height:100svh;overflow:hidden;
-  display:grid;align-items:center;
-  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-  gap:clamp(1rem,4vw,4rem);
-  padding:0 var(--gut);
-}
-.cine__bg{
-  position:absolute;inset:0;pointer-events:none;transition:background 700ms ease;
-  background:
-    radial-gradient(circle at 68% 44%,color-mix(in srgb,var(--stage,#ff2d3f) 15%,transparent),transparent 44%),
-    radial-gradient(circle at 8% 12%,color-mix(in srgb,var(--stage,#ff2d3f) 11%,transparent),transparent 36%),
-    radial-gradient(circle at 96% 88%,color-mix(in srgb,var(--stage,#ff2d3f) 10%,transparent),transparent 38%),
-    #040507;
-}
-.cine__speed{
-  position:absolute;inset:0;pointer-events:none;opacity:0;mix-blend-mode:screen;
-  background:repeating-linear-gradient(92deg,transparent 0 4px,color-mix(in srgb,var(--stage,#ff2d3f) 70%,transparent) 4px 5px,transparent 5px 30px);
-  transition:opacity 260ms ease;
-}
-.cine__speed.is-on{opacity:.5;animation:speed 1.1s linear infinite}
 
-.cine__word{
-  position:absolute;top:50%;left:50%;translate:-50% -50%;margin:0;pointer-events:none;
-  font:400 clamp(4rem,13vw,12rem)/1 var(--display);letter-spacing:.02em;text-transform:uppercase;
-  color:var(--stage,#ff2d3f);opacity:.07;white-space:nowrap;
-  transition:opacity 500ms ease;
-}
-.cine__head{position:absolute;top:clamp(5rem,10vh,7rem);left:var(--gut);right:var(--gut);z-index:3}
-.cine__title{margin:.4rem 0 0;font:400 clamp(1.4rem,3vw,2.4rem)/1 var(--display);text-transform:uppercase}
-.cine__title em{font-style:normal;color:var(--accent)}
 
 /* ---- art stage ---- */
-.cine__art{position:relative;z-index:2;height:min(82svh,720px);order:2;will-change:transform;perspective:1500px}
-.cine__aura{position:absolute;inset:0;width:100%;height:100%}
-.cine__ring{
-  position:absolute;top:46%;left:50%;width:min(58vh,480px);aspect-ratio:1;translate:-50% -50%;
-  border-radius:50%;
-  background:
-    radial-gradient(circle,color-mix(in srgb,var(--stage,#ff2d3f) 16%,transparent) 0 56%,
-                           color-mix(in srgb,var(--stage,#ff2d3f) 52%,transparent) 61% 65%,
-                           transparent 67%);
-  filter:blur(1px) saturate(1.2);
-  box-shadow:0 0 110px 10px color-mix(in srgb,var(--stage,#ff2d3f) 16%,transparent);
-  animation:halo 6s ease-in-out infinite;
-}
-.cine__ring::after{
-  content:'';position:absolute;inset:-12%;border-radius:50%;
-  border:1px solid color-mix(in srgb,var(--stage,#ff2d3f) 28%,transparent);
-  animation:spin 34s linear infinite;
-}
 @keyframes halo{
   0%,100%{opacity:.85;transform:translate(-50%,-50%) scale(1)}
   50%{opacity:1;transform:translate(-50%,-50%) scale(1.035)}
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
-.cine__slot{
-  position:absolute;inset:0;display:grid;place-items:center;
-  opacity:0;transform:scale(.97);
-  transition:opacity 620ms cubic-bezier(.2,.7,.3,1),transform 620ms cubic-bezier(.2,.7,.3,1);
-}
-.cine__slot.is-on{opacity:1;transform:none}
-.cine__slot.is-out{opacity:0;transform:translateX(-70px) scale(.94)}
-.cine__slot svg{
-  height:100%;width:auto;max-width:100%;object-fit:contain;
-  filter:
-    drop-shadow(0 26px 60px rgba(0,0,0,.9))
-    drop-shadow(0 0 26px color-mix(in srgb,var(--aura) 70%,transparent))
-    drop-shadow(0 0 80px color-mix(in srgb,var(--aura) 40%,transparent))
-    contrast(1.12);
-}
 /* Supplied artwork is usually a full opaque illustration rather than a cut-out,
    so it is masked at the edges to dissolve into the black stage. */
-.cine__slot img{
-  position:relative;z-index:1;--cx:0px;--cy:0px;--cr:0deg;transform-style:preserve-3d;
-  height:100%;width:100%;object-fit:cover;object-position:50% 20%;
-  filter:contrast(1.09) saturate(1.14);
-  -webkit-mask-image:radial-gradient(ellipse 78% 76% at 50% 38%,#000 42%,rgba(0,0,0,.6) 68%,transparent 88%);
-          mask-image:radial-gradient(ellipse 78% 76% at 50% 38%,#000 42%,rgba(0,0,0,.6) 68%,transparent 88%);
-  animation:artFloat3d 13s ease-in-out infinite alternate;
-  will-change:transform;
-}
 
 /* --- the artwork never sits still: a slow push in, a red aura breathing
        behind it, and a specular pass sweeping over it like a polish buff --- */
@@ -531,44 +460,18 @@ a{color:inherit}
        rotateY(calc(8deg + var(--cr,0deg)))  rotateX(-2deg) scale(1.05)}
 }
 
-.cine__slot.has-img{overflow:hidden}
 
-.cine__slot.has-img::before{
-  content:'';position:absolute;inset:-12%;z-index:0;pointer-events:none;
-  background:radial-gradient(ellipse 54% 48% at 50% 34%,
-    color-mix(in srgb,var(--stage,#ff2d3f) 52%,transparent),transparent 70%);
-  filter:blur(30px);
-  animation:artpulse 4.6s ease-in-out infinite;
-}
 @keyframes artpulse{
   0%,100%{opacity:.4;transform:scale(1)}
   50%    {opacity:.85;transform:scale(1.07)}
 }
 
-.cine__slot.has-img::after{
-  content:'';position:absolute;inset:-20% -40%;z-index:2;pointer-events:none;
-  background:linear-gradient(104deg,
-    transparent 40%,
-    rgba(255,255,255,.14) 47%,
-    rgba(255,90,105,.12) 50.5%,
-    transparent 58%);
-  mix-blend-mode:screen;
-  transform:translateX(-130%);
-  animation:artsheen 8s cubic-bezier(.4,0,.2,1) infinite;
-}
 @keyframes artsheen{
   0%,68%{transform:translateX(-130%)}
   100%  {transform:translateX(130%)}
 }
 
 /* entrance: the figure wipes up out of the dark the first time you reach it */
-.cine__slot.has-img{
-  clip-path:inset(0 0 100% 0);
-  transition:opacity 620ms cubic-bezier(.2,.7,.3,1),
-             transform 620ms cubic-bezier(.2,.7,.3,1),
-             clip-path 1150ms cubic-bezier(.2,.7,.3,1);
-}
-.cine__slot.has-img.is-lit{clip-path:inset(0 0 0 0)}
 
 /* ---- full-scene artwork -------------------------------------------------
    standard.jpg is a whole scene, not a cut-out figure, so the elliptical
@@ -585,17 +488,6 @@ a{color:inherit}
    The two gradients live on different elements -- horizontal on the image,
    vertical on its container -- which multiplies them without needing
    mask-composite. ---------------------------------------------------------- */
-.cine__slot.is-scene img{
-  object-fit:cover;object-position:54% 44%;
-  filter:contrast(1.06) saturate(1.08);
-  animation:sceneDrift 22s ease-in-out infinite alternate;
-  -webkit-mask-image:linear-gradient(to right,
-    transparent 0%,rgba(0,0,0,.18) 10%,rgba(0,0,0,.62) 26%,#000 42%);
-          mask-image:linear-gradient(to right,
-    transparent 0%,rgba(0,0,0,.18) 10%,rgba(0,0,0,.62) 26%,#000 42%);
-  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
-  -webkit-mask-size:100% 100%;mask-size:100% 100%;
-}
 @keyframes sceneDrift{
   from{transform:translate3d(calc(var(--cx,0px) * .45),calc(1% + var(--cy,0px) * .45),0)
        rotateY(calc(-2deg + var(--cr,0deg) * .3)) scale(1.04)}
@@ -605,61 +497,23 @@ a{color:inherit}
 
 /* the scene has its own lighting, so the red aura and the buff sweep are off */
 .cine__slot.is-scene::before,
-.cine__slot.is-scene::after{display:none}
 
-.cine__art.is-scene{
-  -webkit-mask-image:linear-gradient(to bottom,
-    transparent 0%,#000 14%,#000 86%,transparent 100%);
-          mask-image:linear-gradient(to bottom,
-    transparent 0%,#000 14%,#000 86%,transparent 100%);
-  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
-  -webkit-mask-size:100% 100%;mask-size:100% 100%;
-}
 
 @media (min-width:901px){
-  .cine__art.is-scene{
-    position:absolute;top:0;right:0;bottom:0;left:34%;
-    height:auto;width:auto;margin:0;
-  }
-  .cine__copy{z-index:4}
 }
 
 /* stacked layout: the copy sits under the art, so blend downward instead */
 @media (max-width:900px){
-  .cine__slot.is-scene img{-webkit-mask-image:none;mask-image:none}
-  .cine__art.is-scene{
-    -webkit-mask-image:linear-gradient(to bottom,
-      transparent 0%,#000 12%,#000 58%,transparent 100%);
-            mask-image:linear-gradient(to bottom,
-      transparent 0%,#000 12%,#000 58%,transparent 100%);
-  }
 }
 
 @media (prefers-reduced-motion:reduce){
-  .cine__slot.is-scene img{animation:none}
 }
 
 /* lean in and it sharpens and flares */
-.cine__art:hover .cine__slot.is-on{transform:scale(1.025)}
-.cine__art:hover .cine__slot img{filter:contrast(1.16) saturate(1.3) brightness(1.08)}
-.cine__art:hover .cine__slot.has-img::before{opacity:.95;animation-duration:2.4s}
 /* artwork brings its own glow - pull ours back so they do not fight */
-.cine__art:has(.cine__slot.is-on.has-img) .cine__ring{opacity:.2}
 
 /* the cutout carries its own alpha -- no crop, no vignette mask */
-.cine__slot.is-cut img{
-  object-fit:contain;object-position:50% 50%;
-  -webkit-mask-image:none;mask-image:none;
-  filter:drop-shadow(0 30px 60px rgba(0,0,0,.85))
-         drop-shadow(0 0 40px color-mix(in srgb,var(--stage,#ff2d3f) 40%,transparent));
-}
 /* ---- copy column ---- */
-.cine__copy{position:relative;z-index:3;order:1;padding-block:clamp(3rem,7vw,5rem)}
-.cine__copy::before{
-  content:'';position:absolute;inset:-14% -24% -14% -60%;pointer-events:none;z-index:-1;
-  background:radial-gradient(ellipse at 38% 50%,rgba(4,5,7,.94) 0 44%,rgba(4,5,7,.74) 64%,transparent 82%);
-}
-.cine__desc{margin:0 0 2.2rem;color:#cfd4dd;font-size:1.06rem;max-width:50ch}
 
 .creed{list-style:none;margin:0 0 2.4rem;padding:0;display:grid;gap:1.4rem;max-width:46ch}
 .creed li{position:relative;padding-left:1.9rem}
@@ -671,34 +525,10 @@ a{color:inherit}
 .creed span{color:var(--muted);font-size:.95rem}
 
 /* ---- unused rail (kept harmless) ---- */
-.cine__rail{
-  position:absolute;left:var(--gut);bottom:clamp(2rem,6vh,4rem);z-index:4;
-  list-style:none;margin:0;padding:0;display:flex;gap:1.6rem;flex-wrap:wrap;
-}
-.cine__rail button{
-  display:flex;align-items:center;gap:.55rem;background:none;border:0;cursor:pointer;padding:.5rem 0;
-  font:700 .68rem/1 var(--body);letter-spacing:.22em;color:var(--muted);transition:color var(--t);
-}
-.cine__rail button i{display:block;width:26px;height:2px;background:var(--line);transition:background var(--t),width var(--t)}
-.cine__rail button:hover{color:var(--fg)}
-.cine__rail button[aria-current="true"]{color:var(--fg)}
-.cine__rail button[aria-current="true"] i{background:var(--stage,#ff2d3f);width:44px}
 
 @media (max-width:900px){
-  .cine__stage{min-height:0;grid-template-columns:1fr;padding-block:clamp(3.5rem,11vw,6rem);gap:1.5rem}
-  .cine__word{font-size:4.5rem;opacity:.06}
-  .cine__art{height:min(54svh,440px);order:1}
-  .cine__copy{order:2}
-  .cine__copy::before{inset:-10% -20%}
 }
 @media (prefers-reduced-motion:reduce){
-  .cine{height:auto}
-  .cine__stage{position:static;height:auto}
-  .cine__ring{animation:none}
-  .cine__slot img{animation:none;transform:none}
-  .cine__slot.has-img::before{animation:none;opacity:.6}
-  .cine__slot.has-img::after{animation:none;opacity:0}
-  .cine__slot.has-img{clip-path:none;transition:none}
 }
 
 /* ============================================================
@@ -987,3 +817,178 @@ a{color:inherit}
 .foot__col a{display:inline-block;padding-block:.35rem;text-decoration:none;color:var(--muted);font-size:.93rem;transition:color var(--t)}
 .foot__col a:hover{color:var(--fg)}
 .foot__col p{margin:0 0 .65rem;color:var(--muted);font-size:.93rem;line-height:1.6}
+
+/* ============================================================
+   THE STANDARD — the process artwork
+   The panel art is already the site's palette (red on black ink),
+   so the blending job is only to stop it reading as a rectangle
+   pasted onto the page: the edges are masked into the background,
+   a red bloom sits behind it, and the page grain runs over the top.
+   ============================================================ */
+.chapter{
+  position:relative;isolation:isolate;
+  padding:clamp(3.5rem,9vw,7rem) var(--gut);
+  overflow:hidden;
+}
+.chapter::before{
+  /* bloom, picked from the artwork's own red */
+  content:'';position:absolute;z-index:-2;
+  left:50%;top:38%;width:min(120%,1500px);aspect-ratio:3/2;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(50% 50% at 50% 50%,rgba(255,34,51,.20),transparent 70%);
+  filter:blur(40px);pointer-events:none;
+}
+.chapter__head{max-width:var(--maxw);margin:0 auto clamp(2rem,5vw,3.25rem)}
+.chapter__head .sec__title{margin:.4rem 0 .9rem}
+.chapter__head .sec__lead{max-width:62ch}
+
+.chapter__cta{display:flex;width:fit-content;margin:clamp(2rem,5vw,3rem) auto 0}
+
+@media (max-width:760px){
+  /* the panels get small on a phone, so the caption's "tap to open
+     full size" is the real affordance and the mask is eased off */
+  .chapter__art img{
+    -webkit-mask-image:linear-gradient(to bottom,transparent,#000 2%,#000 98%,transparent);
+    mask-image:linear-gradient(to bottom,transparent,#000 2%,#000 98%,transparent);
+  }
+  .chapter__art figcaption{font-size:.62rem;letter-spacing:.16em}
+}
+@media (prefers-reduced-motion:reduce){
+  .chapter__art:hover img{transform:none}
+}
+
+
+/* ---- the process artwork, walked through region by region -------------
+   The stage carries the live region as --ax/--ay/--aw/--ah. Nothing is
+   darkened: the artwork stays at full strength and a second, clipped copy
+   of it is lifted over the active region, so the panel in question gains
+   light instead of the other eight losing it.
+   ------------------------------------------------------------------- */
+.chapters{margin:0 auto;max-width:var(--maxw)}
+.chapters__stage{
+  position:relative;
+  --ax:0%;--ay:0%;--aw:100%;--ah:31.4%;
+  --edge:linear-gradient(to right,transparent,#000 3.5%,#000 96.5%,transparent),
+         linear-gradient(to bottom,transparent,#000 3%,#000 97%,transparent);
+}
+.chapters__viewport{position:relative;overflow:hidden;isolation:isolate}
+.chapters__base,.chapters__pop{
+  width:100%;height:auto;display:block;
+  -webkit-mask-image:var(--edge);mask-image:var(--edge);
+  -webkit-mask-composite:source-in;mask-composite:intersect;
+}
+/* the lifted copy: same pixels, more light, clipped to the live region */
+.chapters__pop{
+  position:absolute;inset:0;z-index:2;opacity:0;
+  clip-path:inset(var(--ay) calc(100% - var(--ax) - var(--aw)) calc(100% - var(--ay) - var(--ah)) var(--ax));
+  filter:brightness(1.22) saturate(1.3) contrast(1.06);
+  transition:clip-path .55s cubic-bezier(.2,.7,.3,1),opacity .35s ease,transform .55s cubic-bezier(.2,.7,.3,1);
+}
+.chapters__stage.is-live .chapters__pop{opacity:1}
+
+/* the outline that travels between regions */
+.chapters__frame{
+  position:absolute;z-index:3;
+  left:var(--ax);top:var(--ay);width:var(--aw);height:var(--ah);
+  border:2px solid var(--accent);
+  box-shadow:0 0 0 1px rgba(8,9,12,.55),0 0 38px rgba(255,34,51,.5),inset 0 0 26px rgba(255,34,51,.18);
+  opacity:0;pointer-events:none;
+  transition:all .55s cubic-bezier(.2,.7,.3,1),opacity .3s ease;
+}
+.chapters__stage.is-live .chapters__frame{opacity:1}
+/* corner ticks, so the frame reads as a comic panel marker */
+.chapters__frame::before,.chapters__frame::after{
+  content:'';position:absolute;width:14px;height:14px;border:2px solid var(--accent);
+}
+.chapters__frame::before{top:-6px;left:-6px;border-right:0;border-bottom:0}
+.chapters__frame::after{bottom:-6px;right:-6px;border-left:0;border-top:0}
+
+.chapters__hots{position:absolute;inset:0;z-index:4}
+.chapters__hot{
+  position:absolute;left:var(--x);top:var(--y);width:var(--w);height:var(--h);
+  margin:0;padding:0;border:0;background:none;cursor:zoom-in;
+}
+.chapters__hot:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+
+/* ---- zoomed right into one region ---- */
+.chapters__stage.is-zoom .chapters__base,
+.chapters__stage.is-zoom .chapters__pop{
+  transform:scale(var(--s,1)) translate(var(--tx,0%),var(--ty,0%));
+  transition:transform .7s cubic-bezier(.2,.7,.3,1);
+}
+.chapters__stage.is-zoom .chapters__pop{clip-path:none;opacity:1}
+.chapters__stage.is-zoom .chapters__frame{opacity:0}
+.chapters__stage.is-zoom .chapters__hot{cursor:zoom-out}
+.chapters__close{
+  position:absolute;z-index:6;top:1rem;right:1rem;
+  display:inline-flex;align-items:center;gap:.5rem;min-height:44px;padding:.6rem 1rem;cursor:pointer;
+  background:rgba(8,9,12,.78);border:1px solid var(--line);color:var(--fg);backdrop-filter:blur(8px);
+  font:700 .68rem/1 var(--body);letter-spacing:.2em;text-transform:uppercase;
+}
+.chapters__close:hover{border-color:var(--accent);color:var(--accent)}
+.chapters__close[hidden]{display:none}
+.chapters__zoomhint{
+  position:absolute;z-index:5;left:50%;bottom:1rem;transform:translateX(-50%);
+  margin:0;padding:.5rem .85rem;pointer-events:none;
+  background:rgba(8,9,12,.7);border:1px solid var(--line);backdrop-filter:blur(6px);
+  font:700 .62rem/1 var(--body);letter-spacing:.22em;text-transform:uppercase;color:var(--muted);
+  opacity:0;transition:opacity .3s ease;
+}
+.chapters__stage.is-live:not(.is-zoom):hover .chapters__zoomhint{opacity:1}
+
+/* ---- progress through the nine regions ---- */
+.chapters__bar{height:2px;background:var(--line);margin-top:1px;overflow:hidden}
+.chapters__bar i{
+  display:block;height:100%;width:0;background:var(--accent);
+  transition:width .55s cubic-bezier(.2,.7,.3,1);
+}
+
+/* ---- the rail ---- */
+.chapters__rail{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin-top:clamp(1.1rem,2.5vw,1.75rem)}
+.chapters__dot{
+  display:inline-flex;align-items:center;gap:.55rem;cursor:pointer;
+  padding:.6rem .9rem;min-height:44px;
+  background:var(--surface);border:1px solid var(--line);color:var(--muted);
+  font:700 .68rem/1 var(--body);letter-spacing:.18em;text-transform:uppercase;
+  transition:color var(--t),border-color var(--t),background var(--t);
+}
+.chapters__dot b{color:var(--accent);font:400 1rem/1 var(--display);min-width:1ch}
+.chapters__dot:hover{color:var(--fg);border-color:var(--accent)}
+.chapters__dot[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.chapters__dot[aria-selected="true"] b{color:var(--on-accent)}
+@media (max-width:760px){
+  /* a phone should not be compositing two full-size copies of the artwork
+     while it scrolls -- the travelling frame carries the highlight alone */
+  .chapters__pop{display:none}
+  .chapters__base{-webkit-mask-image:none;mask-image:none}
+}
+@media (max-width:720px){
+  .chapters__dot span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .chapters__dot{padding:.6rem;min-width:44px;justify-content:center}
+}
+
+/* ---- the copy that changes with the region ---- */
+.chapters__cap{margin-top:clamp(1.25rem,3vw,2rem);text-align:center}
+.chapters__cards{list-style:none;margin:0;padding:0;display:grid}
+.chapters__card{
+  grid-area:1/1;opacity:0;visibility:hidden;transform:translateY(12px);
+  transition:opacity .4s ease,transform .45s cubic-bezier(.2,.7,.3,1),visibility .4s;
+}
+.chapters__card.is-on{opacity:1;visibility:visible;transform:none}
+.chapters__no{margin:0 0 .3rem;color:var(--accent);font:700 .66rem/1 var(--body);letter-spacing:.3em;text-transform:uppercase}
+.chapters__card h3{margin:0 0 .5rem;font:400 clamp(1.5rem,3.5vw,2.4rem)/1 var(--display);text-transform:uppercase}
+.chapters__card p{margin:0 auto;max-width:56ch;color:var(--muted)}
+.chapters__card a{
+  display:inline-flex;align-items:center;gap:.5rem;margin-top:.9rem;
+  color:var(--fg);text-decoration:none;
+  font:700 .7rem/1 var(--body);letter-spacing:.2em;text-transform:uppercase;
+  border-bottom:2px solid var(--accent);padding-bottom:.35rem;
+}
+.chapters__card a:hover{color:var(--accent)}
+.chapters__hint{margin:1.5rem 0 0;color:var(--muted);font:600 .68rem/1.6 var(--body);letter-spacing:.14em;text-transform:uppercase}
+.chapters__hint a{color:var(--accent)}
+
+@media (prefers-reduced-motion:reduce){
+  .chapters__pop,.chapters__frame,.chapters__card,.chapters__bar i,
+  .chapters__stage.is-zoom .chapters__base,.chapters__stage.is-zoom .chapters__pop{transition:none}
+}

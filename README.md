@@ -100,6 +100,30 @@ must be the same size and framing or the two halves will not line up.
 
 English only. No Japanese text anywhere in the markup or styles.
 
+## The Standard — the process artwork
+
+`assets/art/process.png` is the supplied panel artwork. The home page does not
+paste it in flat: the nine regions of the image (the opening band, the seven
+numbered panels, and the service strip along the bottom) are declared as
+percentage rectangles on `.chapters__hot` buttons, and everything else follows
+from whichever one is active.
+
+Nothing is dimmed to make a point. A second, clipped copy of the same image
+(`.chapters__pop`) is lifted over the active region with more brightness and
+saturation, so one panel gains light rather than the other eight losing it.
+A red frame travels between regions, scrolling the section walks through them,
+hovering takes over, and a click zooms the artwork so that panel fills the
+frame.
+
+Re-cutting the region rectangles after replacing the artwork means editing the
+`--x/--y/--w/--h` values on the nine buttons in `index.html`; they are
+percentages of the image, so they survive any resize.
+
+The page serves `process.jpg` (1400px, ~500 KB) and `process-small.jpg`
+(900px, ~200 KB) rather than the 3 MB PNG, and the phone breakpoint drops the
+lifted copy entirely so it is not compositing two full-size images mid-scroll.
+The PNG stays as the full-size version behind "open the full artwork".
+
 ## Photography and video
 
 The service, gallery and banner photographs are hotlinked from Pexels (free to

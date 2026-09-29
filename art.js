@@ -13,10 +13,7 @@
   var slot = document.querySelector('.cine__slot');
   if (!slot) return;
 
-  // standard.jpg is a full scene rather than a cut-out figure, so it gets a
-  // different treatment: no vignette mask, and it bleeds into the copy column
   var SOURCES = [
-    'assets/art/standard.jpg',
     'assets/art/figure-cut.png',
     'assets/art/figure.png', 'assets/art/figure.jpg',
     'assets/characters/renge.png', 'assets/characters/renge.jpg'
