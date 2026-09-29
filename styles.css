@@ -891,16 +891,22 @@ a{color:inherit}
   mask-image:linear-gradient(to top,#000,transparent 55%);
 }
 
-/* the sound effect, slammed on at an angle */
-.manga__sfx{
-  position:absolute;right:4%;top:8%;z-index:3;pointer-events:none;
-  font:400 clamp(1.5rem,3.4vw,2.9rem)/1 var(--display);letter-spacing:.02em;
-  color:#fff;-webkit-text-stroke:2px var(--accent);
-  text-shadow:0 0 22px rgba(255,34,51,.75);
-  transform:rotate(-8deg) scale(.6);opacity:0;
-  transition:transform .45s cubic-bezier(.2,1.5,.4,1) .3s,opacity .3s ease .3s;
+/* the spec stamp: the same slammed-in beat the sound effect had, but it
+   reads like something off an inspection sheet rather than a comic noise */
+.manga__stamp{
+  position:absolute;right:4%;top:7%;z-index:3;pointer-events:none;
+  padding:.4rem .7rem;
+  border:1px solid var(--accent);background:rgba(8,9,12,.62);backdrop-filter:blur(6px);
+  color:var(--fg);font:800 clamp(.56rem,.9vw,.68rem)/1 var(--body);
+  letter-spacing:.22em;text-transform:uppercase;white-space:nowrap;
+  box-shadow:0 0 22px rgba(255,34,51,.28);
+  transform:rotate(-2deg) translateY(-6px);opacity:0;
+  transition:transform .4s cubic-bezier(.2,.9,.3,1) .3s,opacity .3s ease .3s;
 }
-.manga__panel.is-in .manga__sfx{opacity:1;transform:rotate(-8deg) scale(1)}
+.manga__stamp::before{
+  content:'';position:absolute;left:.7rem;right:.7rem;bottom:-1px;height:2px;background:var(--accent);
+}
+.manga__panel.is-in .manga__stamp{opacity:1;transform:rotate(-2deg) translateY(0)}
 
 /* the panel number, boxed in the corner like a page marker */
 .manga__no{
@@ -1084,10 +1090,10 @@ a{color:inherit}
 }
 
 @media (prefers-reduced-motion:reduce){
-  .manga__panel,.manga__bubble,.manga__sfx,.manga__lines,.manga__img{transition:none}
+  .manga__panel,.manga__bubble,.manga__stamp,.manga__lines,.manga__img{transition:none}
   .manga__panel{opacity:1;transform:none}
-  .manga__bubble,.manga__sfx{opacity:1;transform:rotate(-8deg)}
-  .manga__sfx{transform:rotate(-8deg)}
+  .manga__bubble{opacity:1;transform:none}
+  .manga__stamp{opacity:1;transform:rotate(-2deg)}
 }
 
 .vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}

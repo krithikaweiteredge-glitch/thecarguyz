@@ -108,6 +108,12 @@ rather than one flat picture. Every panel is a crop of the same photograph:
 car shot yields a wheel, a bonnet, a cabin and a grille. Re-framing a panel
 means editing those two values on its `<li>` in `index.html`.
 
+Each panel carries a spec stamp rather than a comic sound effect -- "pH 7.0
+neutral", "two-bucket", "9H ceramic" -- because a noise word undercuts a
+business selling premium work, and a number does not. One caution if you edit
+them: the stamp is uppercased in CSS, which turns a lowercase micron symbol
+into "MM" and would claim millimetres, so units go in words.
+
 Each panel then performs the service it names, in CSS: foam rises and a wipe
 takes it away, the wheel is worked in circles, steam lifts off the cabin, the
 polisher orbits, water pulls into beads and rolls off the coating, and the
