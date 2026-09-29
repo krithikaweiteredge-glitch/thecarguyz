@@ -69,19 +69,29 @@
   /* ---------------------------------------------------------
      3. SCROLL REVEAL + COUNTERS + STAT BARS
      --------------------------------------------------------- */
+  // Revealing an element is more than adding a class: a stat has to start
+  // counting and a bar has to fill. Both the observer and the sweep below
+  // hand off to this, because whichever of them gets there first also
+  // unobserves the element -- so if only one did the work, the other would
+  // never get its turn and the number would sit on zero for good.
+  function activate(el, instant) {
+    if (el.classList.contains('in')) return;
+    el.classList.add('in');
+    if (instant) el.classList.add('is-instant');
+
+    var counter = el.querySelector('[data-count]');
+    if (counter && !counter.dataset.done) { counter.dataset.done = '1'; countUp(counter); }
+
+    el.querySelectorAll('[data-bar]').forEach(function (bar) {
+      bar.style.width = bar.dataset.bar + '%';
+    });
+
+    io.unobserve(el);
+  }
+
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
-      if (!entry.isIntersecting) return;
-      entry.target.classList.add('in');
-
-      var counter = entry.target.querySelector('[data-count]');
-      if (counter && !counter.dataset.done) { counter.dataset.done = '1'; countUp(counter); }
-
-      entry.target.querySelectorAll('[data-bar]').forEach(function (bar) {
-        bar.style.width = bar.dataset.bar + '%';
-      });
-
-      io.unobserve(entry.target);
+      if (entry.isIntersecting) activate(entry.target, false);
     });
   }, { threshold: 0, rootMargin: '0px 0px 240px' });
 
@@ -100,7 +110,7 @@
       var el = reveals[i];
       if (el.classList.contains('in')) { reveals.splice(i, 1); continue; }
       var r = el.getBoundingClientRect();
-      if (r.top < vh && r.bottom > 0) { el.classList.add('in', 'is-instant'); io.unobserve(el); }
+      if (r.top < vh && r.bottom > 0) activate(el, true);
     }
     if (!reveals.length) window.removeEventListener('scroll', onScrollSweep);
   }
