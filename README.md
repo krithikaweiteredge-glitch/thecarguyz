@@ -15,10 +15,10 @@ npx -y serve -l 4321 .
 
 | File | What's in it |
 |---|---|
-| `index.html` | Home — hero, technique teasers, The Standard, before/after |
+| `index.html` | Home — hero, The Standard, the numbers, what customers said |
 | `about.html` | The shop, the five-stage process, the crew |
 | `services.html` | All six techniques written out in full, plus the extras |
-| `gallery.html` | Before/after slider, video band, photographed stages |
+| `gallery.html` | Before/after slider, the wash video, photographed stages |
 | `pricing.html` | The three grades and the FAQ |
 | `contact.html` | Booking form, hours, address |
 | `styles.css` | Design tokens + every style rule |
@@ -107,7 +107,27 @@ use, no attribution required). They are there so the site looks finished before
 the shop's own shots exist — swap the `images.pexels.com` URLs for your own
 files under `assets/` as the real photos come in.
 
-The video band on each page shows its poster photograph until you drop real
-footage at `assets/video/wash.mp4`. `main.js` HEAD-checks that path on load and
-only then builds a `<video>` element, so a site with no footage never requests a
-file that is not there. See `assets/video/README.txt` for the encoding to use.
+`assets/video/wash.mp4` is the clip in the band on the home and gallery pages:
+10 seconds of a car being foamed down, 720p, 3.2 MB, from Mixkit (free for
+commercial use, no attribution required). Replace it with footage of your own
+bay and the page picks the new file up with no other change.
+
+`main.js` HEAD-checks that path before it builds the `<video>`, so if the file
+is ever missing the band falls back to its poster photograph instead of showing
+a broken player. See `assets/video/README.txt` for the encoding to use.
+
+## One thing per page
+
+Nothing is repeated between tabs, and that is deliberate rather than accidental:
+the six techniques live on the services page, the photographs and the video on
+the gallery, the counters and testimonials on the home page. The home page is a
+landing page — it carries nothing another tab already owns, so there is never a
+reason to read the same paragraph twice while clicking through.
+
+If you add a section, check it is not already somewhere else. This finds any
+text that has drifted onto two pages:
+
+```bash
+python -c "import io,re,glob,collections; P=['index.html','about.html','services.html','gallery.html','pricing.html','contact.html']; b=lambda f:re.sub(r'<[^>]+>',' ',re.sub(r'(<header class=.nav.|<footer class=.foot.|<script).*?</(header|footer|script)>','',io.open(f,encoding='utf-8').read(),flags=re.S)); d=collections.defaultdict(set); [d[' '.join(c.split())].add(p) for p in P for c in re.split(r'[.
+]',b(p)) if len(' '.join(c.split()))>28]; [print(sorted(v),k[:70]) for k,v in d.items() if len(v)>1]"
+```
