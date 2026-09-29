@@ -100,29 +100,25 @@ must be the same size and framing or the two halves will not line up.
 
 English only. No Japanese text anywhere in the markup or styles.
 
-## The Standard — the process artwork
+## The Standard — the comic strip
 
-`assets/art/process.png` is the supplied panel artwork. The home page does not
-paste it in flat: the nine regions of the image (the opening band, the seven
-numbered panels, and the service strip along the bottom) are declared as
-percentage rectangles on `.chapters__hot` buttons, and everything else follows
-from whichever one is active.
+The home page tells the job as a seven-panel manga page, built as real panels
+rather than one flat picture. Every panel is a crop of the same photograph:
+`--z` is the zoom (as a background-size percentage) and `--pos` aims it, so one
+car shot yields a wheel, a bonnet, a cabin and a grille. Re-framing a panel
+means editing those two values on its `<li>` in `index.html`.
 
-Nothing is dimmed to make a point. A second, clipped copy of the same image
-(`.chapters__pop`) is lifted over the active region with more brightness and
-saturation, so one panel gains light rather than the other eight losing it.
-A red frame travels between regions, scrolling the section walks through them,
-hovering takes over, and a click zooms the artwork so that panel fills the
-frame.
+Each panel then performs the service it names, in CSS: foam rises and a wipe
+takes it away, the wheel is worked in circles, steam lifts off the cabin, the
+polisher orbits, water pulls into beads and rolls off the coating, and the
+finished car throws a gloss sweep back. The effects hang off a per-panel
+`fx-*` class and only run once the panel has `.is-in`, which `main.js` sets
+when it scrolls into view, so nothing animates off screen. All of it is off
+under `prefers-reduced-motion`.
 
-Re-cutting the region rectangles after replacing the artwork means editing the
-`--x/--y/--w/--h` values on the nine buttons in `index.html`; they are
-percentages of the image, so they survive any resize.
-
-The page serves `process.jpg` (1400px, ~500 KB) and `process-small.jpg`
-(900px, ~200 KB) rather than the 3 MB PNG, and the phone breakpoint drops the
-lifted copy entirely so it is not compositing two full-size images mid-scroll.
-The PNG stays as the full-size version behind "open the full artwork".
+On a phone the grid collapses to one column, so each panel is full width and
+its speech box is readable — the thing that made the original single-image
+version unusable on mobile.
 
 ## Photography and video
 

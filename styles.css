@@ -819,176 +819,275 @@ a{color:inherit}
 .foot__col p{margin:0 0 .65rem;color:var(--muted);font-size:.93rem;line-height:1.6}
 
 /* ============================================================
-   THE STANDARD — the process artwork
-   The panel art is already the site's palette (red on black ink),
-   so the blending job is only to stop it reading as a rectangle
-   pasted onto the page: the edges are masked into the background,
-   a red bloom sits behind it, and the page grain runs over the top.
+   THE STANDARD — the story, drawn as a manga page
+
+   Seven real panels rather than one flat picture, so each one
+   frames its own part of the car (--z zooms, --px/--py aim it),
+   carries its own bubble and sound effect, and draws itself in as
+   the page reaches it. On a phone the grid becomes one column, so
+   every panel is full width and actually readable.
    ============================================================ */
-.chapter{
+.manga{
   position:relative;isolation:isolate;
-  padding:clamp(3.5rem,9vw,7rem) var(--gut);
+  padding:clamp(3.5rem,9vw,7rem) var(--gut) clamp(3rem,7vw,5rem);
   overflow:hidden;
 }
-.chapter::before{
-  /* bloom, picked from the artwork's own red */
-  content:'';position:absolute;z-index:-2;
-  left:50%;top:38%;width:min(120%,1500px);aspect-ratio:3/2;
-  transform:translate(-50%,-50%);
-  background:radial-gradient(50% 50% at 50% 50%,rgba(255,34,51,.20),transparent 70%);
-  filter:blur(40px);pointer-events:none;
+.manga::before{
+  content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(70% 55% at 50% 30%,rgba(255,34,51,.14),transparent 70%);
 }
-.chapter__head{max-width:var(--maxw);margin:0 auto clamp(2rem,5vw,3.25rem)}
-.chapter__head .sec__title{margin:.4rem 0 .9rem}
-.chapter__head .sec__lead{max-width:62ch}
+.manga__head{max-width:var(--maxw);margin:0 auto clamp(2rem,5vw,3rem)}
+.manga__head .sec__title{margin:.4rem 0 .9rem}
+.manga__head .sec__lead{max-width:60ch}
 
-.chapter__cta{display:flex;width:fit-content;margin:clamp(2rem,5vw,3rem) auto 0}
-
-@media (max-width:760px){
-  /* the panels get small on a phone, so the caption's "tap to open
-     full size" is the real affordance and the mask is eased off */
-  .chapter__art img{
-    -webkit-mask-image:linear-gradient(to bottom,transparent,#000 2%,#000 98%,transparent);
-    mask-image:linear-gradient(to bottom,transparent,#000 2%,#000 98%,transparent);
-  }
-  .chapter__art figcaption{font-size:.62rem;letter-spacing:.16em}
+/* ---- the page grid ---- */
+.manga__strip{
+  list-style:none;margin:0 auto;padding:0;max-width:var(--maxw);
+  display:grid;gap:clamp(.7rem,1.6vw,1.1rem);
+  grid-template-columns:repeat(6,1fr);grid-auto-flow:dense;
 }
+.manga__panel{
+  position:relative;overflow:hidden;
+  border:2px solid var(--fg);background:var(--bg-2);
+  grid-column:span 2;aspect-ratio:4/3;
+  /* each panel is inked in as the page reaches it */
+  opacity:0;transform:translateY(26px) rotate(var(--tilt,0deg)) scale(.97);
+  transition:opacity .5s ease,transform .6s cubic-bezier(.2,.8,.3,1);
+  transition-delay:calc(var(--i) * 60ms);
+}
+.manga__panel.is-in{opacity:1;transform:translateY(0) rotate(var(--tilt,0deg)) scale(1)}
+.manga__panel.is-wide{grid-column:span 6;aspect-ratio:21/9}
+.manga__panel.is-half{grid-column:span 3;aspect-ratio:16/10}
+/* a hand-laid page is never perfectly square to the edge */
+.manga__panel:nth-child(2){--tilt:-.5deg}
+.manga__panel:nth-child(4){--tilt:.5deg}
+.manga__panel:nth-child(6){--tilt:-.4deg}
+
+/* ---- the art inside a panel ---- */
+.manga__art{position:absolute;inset:0;overflow:hidden}
+.manga__img{
+  position:absolute;inset:0;display:block;
+  background:url('assets/hero/car2.webp') var(--pos,50% 55%)/var(--z,120%) no-repeat;
+  transform:scale(1);
+  transition:transform 1.4s cubic-bezier(.2,.7,.3,1);
+}
+.manga__panel.is-in .manga__img{transform:scale(1.05)}
+/* speed lines raking across the frame */
+.manga__lines{
+  position:absolute;inset:-25%;pointer-events:none;opacity:0;
+  background:repeating-linear-gradient(72deg,
+    rgba(255,255,255,.55) 0 1px, transparent 1px 9px);
+  -webkit-mask-image:linear-gradient(72deg,#000,transparent 62%);
+  mask-image:linear-gradient(72deg,#000,transparent 62%);
+  transition:opacity .6s ease .25s;
+}
+.manga__panel.is-in .manga__lines{opacity:.5}
+/* halftone, the way a printed panel shades */
+.manga__tone{
+  position:absolute;inset:0;pointer-events:none;opacity:.22;mix-blend-mode:screen;
+  background-image:radial-gradient(rgba(255,34,51,.9) 1px,transparent 1.4px);
+  background-size:7px 7px;
+  -webkit-mask-image:linear-gradient(to top,#000,transparent 55%);
+  mask-image:linear-gradient(to top,#000,transparent 55%);
+}
+
+/* the sound effect, slammed on at an angle */
+.manga__sfx{
+  position:absolute;right:4%;top:8%;z-index:3;pointer-events:none;
+  font:400 clamp(1.5rem,3.4vw,2.9rem)/1 var(--display);letter-spacing:.02em;
+  color:#fff;-webkit-text-stroke:2px var(--accent);
+  text-shadow:0 0 22px rgba(255,34,51,.75);
+  transform:rotate(-8deg) scale(.6);opacity:0;
+  transition:transform .45s cubic-bezier(.2,1.5,.4,1) .3s,opacity .3s ease .3s;
+}
+.manga__panel.is-in .manga__sfx{opacity:1;transform:rotate(-8deg) scale(1)}
+
+/* the panel number, boxed in the corner like a page marker */
+.manga__no{
+  position:absolute;left:0;top:0;z-index:4;
+  padding:.3rem .7rem;background:var(--fg);color:var(--bg);
+  font:800 .74rem/1 var(--body);letter-spacing:.14em;
+}
+
+/* the caption box, the way a manga narration box sits in the corner */
+.manga__bubble{
+  position:absolute;left:5%;bottom:22%;z-index:4;max-width:min(62%,30ch);margin:0;
+  padding:.7rem .9rem;background:#f4f5f7;color:#08090c;
+  font:800 clamp(.72rem,1.15vw,.86rem)/1.35 var(--body);
+  box-shadow:4px 4px 0 rgba(8,9,12,.55);
+  opacity:0;transform:translateY(8px);
+  transition:opacity .4s ease .4s,transform .4s cubic-bezier(.2,.8,.3,1) .4s;
+}
+.manga__panel.is-in .manga__bubble{opacity:1;transform:none}
+.manga__cap{
+  position:absolute;left:0;right:0;bottom:0;z-index:4;margin:0;padding:.55rem .9rem;
+  background:linear-gradient(to top,rgba(8,9,12,.95),transparent);
+}
+.manga__cap b{
+  color:var(--accent);font:700 .68rem/1 var(--body);letter-spacing:.26em;text-transform:uppercase;
+}
+
+.manga__end{
+  max-width:var(--maxw);margin:clamp(2rem,5vw,3rem) auto 0;text-align:center;
+  display:grid;justify-items:center;gap:1.25rem;
+  color:var(--muted);font:600 .78rem/1.6 var(--body);letter-spacing:.2em;text-transform:uppercase;
+}
+
+
+/* ---- each panel performs the service it names --------------------------
+   The effects only run once a panel is in view (.is-in), so nothing is
+   animating off screen, and every one of them is switched off under
+   prefers-reduced-motion at the bottom of this file.
+   --------------------------------------------------------------------- */
+.manga__fx{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.manga__fx::before,.manga__fx::after{content:'';position:absolute;inset:0}
+
+/* 01 ARRIVAL — it comes in filmed over, and the dust settles */
+.fx-dust .manga__img{filter:grayscale(.55) brightness(.62) sepia(.2)}
+.fx-dust.is-in .manga__img{
+  filter:grayscale(.55) brightness(.62) sepia(.2);
+  animation:fxSettle 2.4s ease-out .3s forwards;
+}
+@keyframes fxSettle{to{filter:grayscale(.28) brightness(.8) sepia(.08)}}
+.fx-dust .manga__fx::before{
+  background-image:radial-gradient(rgba(190,170,140,.5) .6px,transparent 1.2px);
+  background-size:5px 5px;opacity:.7;
+}
+.fx-dust.is-in .manga__fx::before{animation:fxDrift 9s linear infinite}
+@keyframes fxDrift{to{background-position:26px 60px}}
+
+/* 02 FOAM WASH — foam rises, then a wipe takes it and the grime away */
+.fx-foam .manga__fx::before{
+  background:
+    radial-gradient(circle at 18% 88%,rgba(255,255,255,.95) 0 10px,transparent 11px),
+    radial-gradient(circle at 34% 96%,rgba(255,255,255,.85) 0 15px,transparent 16px),
+    radial-gradient(circle at 56% 92%,rgba(255,255,255,.9) 0 11px,transparent 12px),
+    radial-gradient(circle at 74% 98%,rgba(255,255,255,.8) 0 17px,transparent 18px),
+    radial-gradient(circle at 90% 90%,rgba(255,255,255,.9) 0 9px,transparent 10px);
+  filter:blur(1px);opacity:0;
+}
+.fx-foam.is-in .manga__fx::before{animation:fxFoam 3.2s ease-in-out infinite}
+@keyframes fxFoam{
+  0%{opacity:0;transform:translateY(18%) scale(.9)}
+  35%{opacity:.85}
+  100%{opacity:0;transform:translateY(-58%) scale(1.15)}
+}
+.fx-foam .manga__fx::after{
+  background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.92) 47%,rgba(255,255,255,.5) 52%,transparent 60%);
+  transform:translateX(-120%);
+}
+.fx-foam.is-in .manga__fx::after{animation:fxWipe 3.2s cubic-bezier(.4,0,.2,1) infinite}
+@keyframes fxWipe{0%,55%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+
+/* 03 HAND DETAILING — the wheel is worked in circles */
+.fx-spin .manga__fx::before{
+  left:44%;top:40%;right:auto;bottom:auto;width:36%;aspect-ratio:1;
+  border-radius:50%;inset:auto;
+  background:conic-gradient(from 0deg,transparent 0 62%,rgba(255,255,255,.75) 72%,transparent 84%);
+  -webkit-mask-image:radial-gradient(circle,transparent 44%,#000 47%,#000 96%,transparent);
+  mask-image:radial-gradient(circle,transparent 44%,#000 47%,#000 96%,transparent);
+}
+.fx-spin.is-in .manga__fx::before{animation:fxSpin 1.5s linear infinite}
+@keyframes fxSpin{to{transform:rotate(360deg)}}
+.fx-spin .manga__fx::after{
+  left:54%;top:50%;width:14px;height:14px;inset:auto;border-radius:50%;
+  background:radial-gradient(circle,#fff,rgba(255,255,255,0) 70%);opacity:0;
+}
+.fx-spin.is-in .manga__fx::after{animation:fxGlint 1.5s ease-in-out infinite}
+@keyframes fxGlint{0%,70%{opacity:0;transform:scale(.4)}82%{opacity:1;transform:scale(1.4)}100%{opacity:0;transform:scale(.6)}}
+
+/* 04 INTERIOR — steam lifting off the cabin */
+.fx-steam .manga__fx::before{
+  background:
+    radial-gradient(ellipse 22% 30% at 24% 78%,rgba(255,255,255,.5),transparent 70%),
+    radial-gradient(ellipse 26% 34% at 56% 86%,rgba(255,255,255,.42),transparent 70%),
+    radial-gradient(ellipse 20% 28% at 82% 80%,rgba(255,255,255,.45),transparent 70%);
+  filter:blur(6px);opacity:0;
+}
+.fx-steam.is-in .manga__fx::before{animation:fxSteam 4.4s ease-in-out infinite}
+@keyframes fxSteam{
+  0%{opacity:0;transform:translateY(16%) scale(1)}
+  40%{opacity:.75}
+  100%{opacity:0;transform:translateY(-42%) scale(1.3)}
+}
+
+/* 05 CORRECTION — the pad orbits and the swirls go */
+.fx-polish .manga__fx::before{
+  left:50%;top:44%;width:26%;aspect-ratio:1;inset:auto;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.55),rgba(255,255,255,.12) 55%,transparent 72%);
+  filter:blur(2px);transform-origin:-30% 50%;
+}
+.fx-polish.is-in .manga__fx::before{animation:fxOrbit 2.6s linear infinite}
+@keyframes fxOrbit{to{transform:rotate(360deg)}}
+.fx-polish .manga__fx::after{
+  background:linear-gradient(112deg,transparent 40%,rgba(255,255,255,.75) 49%,transparent 58%);
+  transform:translateX(-110%);
+}
+.fx-polish.is-in .manga__fx::after{animation:fxWipe 2.6s ease-in-out infinite}
+
+/* 06 PROTECTION — water pulls into beads and rolls off the coating */
+.fx-bead .manga__fx::before{
+  background:
+    radial-gradient(circle at 16% 24%,rgba(255,255,255,.9) 0 3px,transparent 4px),
+    radial-gradient(circle at 32% 44%,rgba(255,255,255,.75) 0 4px,transparent 5px),
+    radial-gradient(circle at 48% 20%,rgba(255,255,255,.85) 0 2.5px,transparent 3.5px),
+    radial-gradient(circle at 62% 52%,rgba(255,255,255,.8) 0 4.5px,transparent 5.5px),
+    radial-gradient(circle at 78% 30%,rgba(255,255,255,.9) 0 3px,transparent 4px),
+    radial-gradient(circle at 88% 58%,rgba(255,255,255,.7) 0 3.5px,transparent 4.5px);
+}
+.fx-bead.is-in .manga__fx::before{animation:fxBead 3.4s ease-in infinite}
+@keyframes fxBead{
+  0%{opacity:0;transform:translateY(-8%) scale(.7)}
+  22%{opacity:1;transform:translateY(0) scale(1)}
+  62%{opacity:1;transform:translateY(12%) scale(1)}
+  100%{opacity:0;transform:translateY(62%) scale(.85)}
+}
+.fx-bead .manga__fx::after{
+  background:repeating-linear-gradient(98deg,rgba(255,255,255,.22) 0 1px,transparent 1px 16px);
+  opacity:0;
+}
+.fx-bead.is-in .manga__fx::after{animation:fxRain 1.1s linear infinite}
+@keyframes fxRain{0%{opacity:.5;transform:translateY(-14%)}100%{opacity:.5;transform:translateY(14%)}}
+
+/* 07 A NEW CHAPTER — the gloss sweeps and it throws the light back */
+.fx-shine .manga__fx::before{
+  background:linear-gradient(100deg,transparent 42%,rgba(255,255,255,.85) 50%,rgba(255,60,74,.4) 54%,transparent 62%);
+  transform:translateX(-110%);
+}
+.fx-shine.is-in .manga__fx::before{animation:fxWipe 4.2s cubic-bezier(.5,0,.2,1) infinite}
+.fx-shine .manga__fx::after{
+  background:
+    radial-gradient(circle at 26% 34%,#fff 0 1.5px,transparent 3px),
+    radial-gradient(circle at 58% 26%,#fff 0 2px,transparent 4px),
+    radial-gradient(circle at 78% 46%,#fff 0 1.5px,transparent 3px);
+  opacity:0;
+}
+.fx-shine.is-in .manga__fx::after{animation:fxSparkle 4.2s ease-in-out infinite}
+@keyframes fxSparkle{0%,52%{opacity:0;transform:scale(.6)}62%{opacity:1;transform:scale(1.25)}78%{opacity:0;transform:scale(.8)}}
+
 @media (prefers-reduced-motion:reduce){
-  .chapter__art:hover img{transform:none}
+  .manga__fx::before,.manga__fx::after,
+  .fx-dust.is-in .manga__img{animation:none!important}
+  .fx-foam .manga__fx::before,.fx-steam .manga__fx::before,
+  .fx-bead .manga__fx::before,.fx-shine .manga__fx::after{opacity:.6}
+  .fx-foam .manga__fx::after,.fx-polish .manga__fx::after,
+  .fx-shine .manga__fx::before{transform:none;opacity:.35}
 }
 
-
-/* ---- the process artwork, walked through region by region -------------
-   The stage carries the live region as --ax/--ay/--aw/--ah. Nothing is
-   darkened: the artwork stays at full strength and a second, clipped copy
-   of it is lifted over the active region, so the panel in question gains
-   light instead of the other eight losing it.
-   ------------------------------------------------------------------- */
-.chapters{margin:0 auto;max-width:var(--maxw)}
-.chapters__stage{
-  position:relative;
-  --ax:0%;--ay:0%;--aw:100%;--ah:31.4%;
-  --edge:linear-gradient(to right,transparent,#000 3.5%,#000 96.5%,transparent),
-         linear-gradient(to bottom,transparent,#000 3%,#000 97%,transparent);
-}
-.chapters__viewport{position:relative;overflow:hidden;isolation:isolate}
-.chapters__base,.chapters__pop{
-  width:100%;height:auto;display:block;
-  -webkit-mask-image:var(--edge);mask-image:var(--edge);
-  -webkit-mask-composite:source-in;mask-composite:intersect;
-}
-/* the lifted copy: same pixels, more light, clipped to the live region */
-.chapters__pop{
-  position:absolute;inset:0;z-index:2;opacity:0;
-  clip-path:inset(var(--ay) calc(100% - var(--ax) - var(--aw)) calc(100% - var(--ay) - var(--ah)) var(--ax));
-  filter:brightness(1.22) saturate(1.3) contrast(1.06);
-  transition:clip-path .55s cubic-bezier(.2,.7,.3,1),opacity .35s ease,transform .55s cubic-bezier(.2,.7,.3,1);
-}
-.chapters__stage.is-live .chapters__pop{opacity:1}
-
-/* the outline that travels between regions */
-.chapters__frame{
-  position:absolute;z-index:3;
-  left:var(--ax);top:var(--ay);width:var(--aw);height:var(--ah);
-  border:2px solid var(--accent);
-  box-shadow:0 0 0 1px rgba(8,9,12,.55),0 0 38px rgba(255,34,51,.5),inset 0 0 26px rgba(255,34,51,.18);
-  opacity:0;pointer-events:none;
-  transition:all .55s cubic-bezier(.2,.7,.3,1),opacity .3s ease;
-}
-.chapters__stage.is-live .chapters__frame{opacity:1}
-/* corner ticks, so the frame reads as a comic panel marker */
-.chapters__frame::before,.chapters__frame::after{
-  content:'';position:absolute;width:14px;height:14px;border:2px solid var(--accent);
-}
-.chapters__frame::before{top:-6px;left:-6px;border-right:0;border-bottom:0}
-.chapters__frame::after{bottom:-6px;right:-6px;border-left:0;border-top:0}
-
-.chapters__hots{position:absolute;inset:0;z-index:4}
-.chapters__hot{
-  position:absolute;left:var(--x);top:var(--y);width:var(--w);height:var(--h);
-  margin:0;padding:0;border:0;background:none;cursor:zoom-in;
-}
-.chapters__hot:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
-
-/* ---- zoomed right into one region ---- */
-.chapters__stage.is-zoom .chapters__base,
-.chapters__stage.is-zoom .chapters__pop{
-  transform:scale(var(--s,1)) translate(var(--tx,0%),var(--ty,0%));
-  transition:transform .7s cubic-bezier(.2,.7,.3,1);
-}
-.chapters__stage.is-zoom .chapters__pop{clip-path:none;opacity:1}
-.chapters__stage.is-zoom .chapters__frame{opacity:0}
-.chapters__stage.is-zoom .chapters__hot{cursor:zoom-out}
-.chapters__close{
-  position:absolute;z-index:6;top:1rem;right:1rem;
-  display:inline-flex;align-items:center;gap:.5rem;min-height:44px;padding:.6rem 1rem;cursor:pointer;
-  background:rgba(8,9,12,.78);border:1px solid var(--line);color:var(--fg);backdrop-filter:blur(8px);
-  font:700 .68rem/1 var(--body);letter-spacing:.2em;text-transform:uppercase;
-}
-.chapters__close:hover{border-color:var(--accent);color:var(--accent)}
-.chapters__close[hidden]{display:none}
-.chapters__zoomhint{
-  position:absolute;z-index:5;left:50%;bottom:1rem;transform:translateX(-50%);
-  margin:0;padding:.5rem .85rem;pointer-events:none;
-  background:rgba(8,9,12,.7);border:1px solid var(--line);backdrop-filter:blur(6px);
-  font:700 .62rem/1 var(--body);letter-spacing:.22em;text-transform:uppercase;color:var(--muted);
-  opacity:0;transition:opacity .3s ease;
-}
-.chapters__stage.is-live:not(.is-zoom):hover .chapters__zoomhint{opacity:1}
-
-/* ---- progress through the nine regions ---- */
-.chapters__bar{height:2px;background:var(--line);margin-top:1px;overflow:hidden}
-.chapters__bar i{
-  display:block;height:100%;width:0;background:var(--accent);
-  transition:width .55s cubic-bezier(.2,.7,.3,1);
-}
-
-/* ---- the rail ---- */
-.chapters__rail{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin-top:clamp(1.1rem,2.5vw,1.75rem)}
-.chapters__dot{
-  display:inline-flex;align-items:center;gap:.55rem;cursor:pointer;
-  padding:.6rem .9rem;min-height:44px;
-  background:var(--surface);border:1px solid var(--line);color:var(--muted);
-  font:700 .68rem/1 var(--body);letter-spacing:.18em;text-transform:uppercase;
-  transition:color var(--t),border-color var(--t),background var(--t);
-}
-.chapters__dot b{color:var(--accent);font:400 1rem/1 var(--display);min-width:1ch}
-.chapters__dot:hover{color:var(--fg);border-color:var(--accent)}
-.chapters__dot[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
-.chapters__dot[aria-selected="true"] b{color:var(--on-accent)}
+/* ---- one column on a phone, so every panel is readable ---- */
 @media (max-width:760px){
-  /* a phone should not be compositing two full-size copies of the artwork
-     while it scrolls -- the travelling frame carries the highlight alone */
-  .chapters__pop{display:none}
-  .chapters__base{-webkit-mask-image:none;mask-image:none}
+  .manga__strip{grid-template-columns:1fr;gap:1rem}
+  .manga__panel,
+  .manga__panel.is-wide,
+  .manga__panel.is-half{grid-column:span 1;aspect-ratio:4/3;--tilt:0deg}
+  .manga__bubble{max-width:72%;font-size:.82rem}
 }
-@media (max-width:720px){
-  .chapters__dot span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-  .chapters__dot{padding:.6rem;min-width:44px;justify-content:center}
-}
-
-/* ---- the copy that changes with the region ---- */
-.chapters__cap{margin-top:clamp(1.25rem,3vw,2rem);text-align:center}
-.chapters__cards{list-style:none;margin:0;padding:0;display:grid}
-.chapters__card{
-  grid-area:1/1;opacity:0;visibility:hidden;transform:translateY(12px);
-  transition:opacity .4s ease,transform .45s cubic-bezier(.2,.7,.3,1),visibility .4s;
-}
-.chapters__card.is-on{opacity:1;visibility:visible;transform:none}
-.chapters__no{margin:0 0 .3rem;color:var(--accent);font:700 .66rem/1 var(--body);letter-spacing:.3em;text-transform:uppercase}
-.chapters__card h3{margin:0 0 .5rem;font:400 clamp(1.5rem,3.5vw,2.4rem)/1 var(--display);text-transform:uppercase}
-.chapters__card p{margin:0 auto;max-width:56ch;color:var(--muted)}
-.chapters__card a{
-  display:inline-flex;align-items:center;gap:.5rem;margin-top:.9rem;
-  color:var(--fg);text-decoration:none;
-  font:700 .7rem/1 var(--body);letter-spacing:.2em;text-transform:uppercase;
-  border-bottom:2px solid var(--accent);padding-bottom:.35rem;
-}
-.chapters__card a:hover{color:var(--accent)}
-.chapters__hint{margin:1.5rem 0 0;color:var(--muted);font:600 .68rem/1.6 var(--body);letter-spacing:.14em;text-transform:uppercase}
-.chapters__hint a{color:var(--accent)}
 
 @media (prefers-reduced-motion:reduce){
-  .chapters__pop,.chapters__frame,.chapters__card,.chapters__bar i,
-  .chapters__stage.is-zoom .chapters__base,.chapters__stage.is-zoom .chapters__pop{transition:none}
+  .manga__panel,.manga__bubble,.manga__sfx,.manga__lines,.manga__img{transition:none}
+  .manga__panel{opacity:1;transform:none}
+  .manga__bubble,.manga__sfx{opacity:1;transform:rotate(-8deg)}
+  .manga__sfx{transform:rotate(-8deg)}
 }
+
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}

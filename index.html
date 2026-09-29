@@ -85,74 +85,100 @@
 
 
 <!-- ================= THE STANDARD ================= -->
-<section class="chapter" id="standard">
-  <div class="chapter__head">
+<section class="manga" id="standard">
+  <div class="manga__head">
     <p class="kicker reveal"><span class="dot" aria-hidden="true"></span>02 &mdash; THE STANDARD</p>
-    <h2 class="sec__title reveal">SEVEN CHAPTERS.<br /><em>ONE FINISH.</em></h2>
-    <p class="sec__lead reveal">Seven chapters from the moment it rolls in to the moment you get the keys back. Nothing is skipped, and nothing happens to your paint that you have not been shown first.</p>
+    <h2 class="sec__title reveal">A DIRTY RIDE<br /><em>HAS A STORY.</em></h2>
+    <p class="sec__lead reveal">Seven panels, start to finish. Keep scrolling and the page draws itself.</p>
   </div>
 
-  <figure class="chapters reveal" id="chapters">
-    <div class="chapters__stage" id="chStage">
-      <div class="chapters__viewport">
-        <img class="chapters__base" src="assets/art/process.jpg"
-             srcset="assets/art/process-small.jpg 900w, assets/art/process.jpg 1400w"
-             sizes="(max-width: 760px) 94vw, min(1320px, 92vw)"
-             alt="Nine regions of one artwork following a car through the bay: the opening, arrival, foam wash, hand detailing, interior cleaning, dry and polish, protection, the finished car, and the list of services"
-             width="1536" height="1024" />
-        <img class="chapters__pop" src="assets/art/process.jpg"
-             srcset="assets/art/process-small.jpg 900w, assets/art/process.jpg 1400w"
-             sizes="(max-width: 760px) 94vw, min(1320px, 92vw)"
-             alt="" aria-hidden="true" width="1536" height="1024" />
-        <span class="chapters__frame" aria-hidden="true"></span>
-        <div class="chapters__hots" role="group" aria-label="Regions of the artwork">
-        <button class="chapters__hot" type="button" data-ch="0" style="--x:0%;--y:0%;--w:100%;--h:31.4%" aria-label="The Story"></button>
-        <button class="chapters__hot" type="button" data-ch="1" style="--x:0%;--y:31.7%;--w:24.2%;--h:32.2%" aria-label="Arrival"></button>
-        <button class="chapters__hot" type="button" data-ch="2" style="--x:24.4%;--y:31.7%;--w:27.0%;--h:32.2%" aria-label="Foam Wash"></button>
-        <button class="chapters__hot" type="button" data-ch="3" style="--x:51.6%;--y:31.7%;--w:25.1%;--h:32.2%" aria-label="Hand Detailing"></button>
-        <button class="chapters__hot" type="button" data-ch="4" style="--x:76.9%;--y:31.7%;--w:23.1%;--h:32.2%" aria-label="Interior Cleaning"></button>
-        <button class="chapters__hot" type="button" data-ch="5" style="--x:0%;--y:64.9%;--w:30.5%;--h:28.7%" aria-label="Dry and Polish"></button>
-        <button class="chapters__hot" type="button" data-ch="6" style="--x:30.7%;--y:64.9%;--w:26.0%;--h:28.7%" aria-label="Protection"></button>
-        <button class="chapters__hot" type="button" data-ch="7" style="--x:57.0%;--y:64.9%;--w:43.0%;--h:28.7%" aria-label="A New Chapter"></button>
-        <button class="chapters__hot" type="button" data-ch="8" style="--x:0%;--y:93.7%;--w:100%;--h:6.3%" aria-label="Everything We Do"></button>
-        </div>
+  <ol class="manga__strip" id="mangaStrip">
+    <li class="manga__panel is-wide fx-dust" style="--i:0;--z:150%;--pos:80% 62%">
+      <div class="manga__art">
+        <span class="manga__img" role="img" aria-label="The car arriving at the bay"></span>
+        <span class="manga__lines" aria-hidden="true"></span>
+        <span class="manga__tone" aria-hidden="true"></span>
+        <span class="manga__fx" aria-hidden="true"></span>
       </div>
-      <button class="chapters__close" type="button" hidden>Close <span aria-hidden="true">&times;</span></button>
-      <p class="chapters__zoomhint" aria-hidden="true">Click to zoom</p>
-    </div>
+      <span class="manga__no" aria-hidden="true">01</span>
+      <p class="manga__bubble">Every journey brings dust.<br />We handle the rest.</p>
+      <p class="manga__cap"><b>ARRIVAL</b></p>
+    </li>
+    <li class="manga__panel fx-foam" style="--i:1;--z:200%;--pos:42% 44%">
+      <div class="manga__art">
+        <span class="manga__img" role="img" aria-label="The car under the shop lights"></span>
+        <span class="manga__lines" aria-hidden="true"></span>
+        <span class="manga__tone" aria-hidden="true"></span>
+        <span class="manga__fx" aria-hidden="true"></span>
+        <span class="manga__sfx" aria-hidden="true">FWOOOSH</span>
+      </div>
+      <span class="manga__no" aria-hidden="true">02</span>
+      <p class="manga__bubble">Layer by layer,<br />the grit lets go.</p>
+      <p class="manga__cap"><b>FOAM WASH</b></p>
+    </li>
+    <li class="manga__panel fx-spin" style="--i:2;--z:290%;--pos:70% 80%">
+      <div class="manga__art">
+        <span class="manga__img" role="img" aria-label="The car under the shop lights"></span>
+        <span class="manga__lines" aria-hidden="true"></span>
+        <span class="manga__tone" aria-hidden="true"></span>
+        <span class="manga__fx" aria-hidden="true"></span>
+        <span class="manga__sfx" aria-hidden="true">SHK SHK</span>
+      </div>
+      <span class="manga__no" aria-hidden="true">03</span>
+      <p class="manga__bubble">The places a machine<br />cannot reach.</p>
+      <p class="manga__cap"><b>HAND DETAILING</b></p>
+    </li>
+    <li class="manga__panel fx-steam" style="--i:3;--z:250%;--pos:63% 30%">
+      <div class="manga__art">
+        <span class="manga__img" role="img" aria-label="The car under the shop lights"></span>
+        <span class="manga__lines" aria-hidden="true"></span>
+        <span class="manga__tone" aria-hidden="true"></span>
+        <span class="manga__fx" aria-hidden="true"></span>
+        <span class="manga__sfx" aria-hidden="true">HUUUU</span>
+      </div>
+      <span class="manga__no" aria-hidden="true">04</span>
+      <p class="manga__bubble">Steam, extraction,<br />leather fed.</p>
+      <p class="manga__cap"><b>INTERIOR</b></p>
+    </li>
+    <li class="manga__panel is-half fx-polish" style="--i:4;--z:270%;--pos:33% 50%">
+      <div class="manga__art">
+        <span class="manga__img" role="img" aria-label="The car under the shop lights"></span>
+        <span class="manga__lines" aria-hidden="true"></span>
+        <span class="manga__tone" aria-hidden="true"></span>
+        <span class="manga__fx" aria-hidden="true"></span>
+        <span class="manga__sfx" aria-hidden="true">KRRRK</span>
+      </div>
+      <span class="manga__no" aria-hidden="true">05</span>
+      <p class="manga__bubble">Swirls cut.<br />Not filled.</p>
+      <p class="manga__cap"><b>CORRECTION</b></p>
+    </li>
+    <li class="manga__panel is-half fx-bead" style="--i:5;--z:245%;--pos:17% 56%">
+      <div class="manga__art">
+        <span class="manga__img" role="img" aria-label="The car under the shop lights"></span>
+        <span class="manga__lines" aria-hidden="true"></span>
+        <span class="manga__tone" aria-hidden="true"></span>
+        <span class="manga__fx" aria-hidden="true"></span>
+        <span class="manga__sfx" aria-hidden="true">SHIIING</span>
+      </div>
+      <span class="manga__no" aria-hidden="true">06</span>
+      <p class="manga__bubble">9H bonded.<br />The barrier goes up.</p>
+      <p class="manga__cap"><b>PROTECTION</b></p>
+    </li>
+    <li class="manga__panel is-wide fx-shine" style="--i:6;--z:108%;--pos:50% 55%">
+      <div class="manga__art">
+        <span class="manga__img" role="img" aria-label="The car under the shop lights"></span><span class="manga__lines" aria-hidden="true"></span>
+        <span class="manga__tone" aria-hidden="true"></span>
+        <span class="manga__fx" aria-hidden="true"></span>
+      </div>
+      <span class="manga__no" aria-hidden="true">07</span>
+      <p class="manga__bubble">Cleaner. Sharper.<br />Ready for what&rsquo;s next.</p>
+      <p class="manga__cap"><b>A NEW CHAPTER</b></p>
+    </li>
+  </ol>
 
-    <div class="chapters__bar" aria-hidden="true"><i></i></div>
-
-    <div class="chapters__rail" role="tablist" aria-label="Walk through the artwork">
-      <button class="chapters__dot" type="button" role="tab" aria-selected="false" data-ch="0"><b>&bull;</b><span>The Story</span></button>
-      <button class="chapters__dot" type="button" role="tab" aria-selected="false" data-ch="1"><b>1</b><span>Arrival</span></button>
-      <button class="chapters__dot" type="button" role="tab" aria-selected="false" data-ch="2"><b>2</b><span>Foam Wash</span></button>
-      <button class="chapters__dot" type="button" role="tab" aria-selected="false" data-ch="3"><b>3</b><span>Hand Detailing</span></button>
-      <button class="chapters__dot" type="button" role="tab" aria-selected="false" data-ch="4"><b>4</b><span>Interior Cleaning</span></button>
-      <button class="chapters__dot" type="button" role="tab" aria-selected="false" data-ch="5"><b>5</b><span>Dry &amp; Polish</span></button>
-      <button class="chapters__dot" type="button" role="tab" aria-selected="false" data-ch="6"><b>6</b><span>Protection</span></button>
-      <button class="chapters__dot" type="button" role="tab" aria-selected="false" data-ch="7"><b>7</b><span>A New Chapter</span></button>
-      <button class="chapters__dot" type="button" role="tab" aria-selected="false" data-ch="8"><b>+</b><span>Everything We Do</span></button>
-    </div>
-
-    <figcaption class="chapters__cap">
-      <ul class="chapters__cards">
-      <li class="chapters__card" data-ch="0"><p class="chapters__no">OPENING</p><h3>A DIRTY RIDE HAS A STORY</h3><p>Every car that comes through the door arrives with one. What we do about it is the rest of this page.</p><a href="about.html">About the shop <span aria-hidden="true">&rarr;</span></a></li>
-      <li class="chapters__card" data-ch="1"><p class="chapters__no">CHAPTER 01</p><h3>ARRIVAL</h3><p>Paint depth gauged, defects mapped under 6000K light. You see the readings before we quote a rupee.</p><a href="about.html#process">How we work <span aria-hidden="true">&rarr;</span></a></li>
-      <li class="chapters__card" data-ch="2"><p class="chapters__no">CHAPTER 02</p><h3>FOAM WASH</h3><p>Snow foam dwells for ten minutes, then a two-bucket contact wash. The grit leaves before a mitt ever arrives.</p><a href="services.html#wash">Foam cannon wash <span aria-hidden="true">&rarr;</span></a></li>
-      <li class="chapters__card" data-ch="3"><p class="chapters__no">CHAPTER 03</p><h3>HAND DETAILING</h3><p>Wheels, arches, shuts and badges by hand. The places a machine cannot reach are where a car is actually judged.</p><a href="services.html#detailing">Full car detailing <span aria-hidden="true">&rarr;</span></a></li>
-      <li class="chapters__card" data-ch="4"><p class="chapters__no">CHAPTER 04</p><h3>INTERIOR CLEANING</h3><p>Steam, hot-water extraction, leather fed and plastics dressed matte. The cabin comes back smelling of nothing at all.</p><a href="services.html#interior">Interior revival <span aria-hidden="true">&rarr;</span></a></li>
-      <li class="chapters__card" data-ch="5"><p class="chapters__no">CHAPTER 05</p><h3>DRY &amp; POLISH</h3><p>Blown dry with no towel drag, then cut, refined and finished under the light. We remove defects, not your clear coat.</p><a href="services.html#correction">Paint correction <span aria-hidden="true">&rarr;</span></a></li>
-      <li class="chapters__card" data-ch="6"><p class="chapters__no">CHAPTER 06</p><h3>PROTECTION</h3><p>Film laid or 9H ceramic bonded, then cured in a sealed bay. The barrier goes up and the gloss stays locked for years.</p><a href="services.html#ceramic">Ceramic &amp; PPF <span aria-hidden="true">&rarr;</span></a></li>
-      <li class="chapters__card" data-ch="7"><p class="chapters__no">CHAPTER 07</p><h3>A NEW CHAPTER</h3><p>Final walkaround with you, aftercare kit in the boot, and a plan that keeps it looking exactly like this.</p><a href="gallery.html">See the gallery <span aria-hidden="true">&rarr;</span></a></li>
-      <li class="chapters__card" data-ch="8"><p class="chapters__no">THE MENU</p><h3>EVERYTHING WE DO</h3><p>Wash, detailing, correction, film, ceramic, interiors, wheels and headlights. Eight techniques, one roof.</p><a href="services.html">All eight services <span aria-hidden="true">&rarr;</span></a></li>
-      </ul>
-      <p class="chapters__hint">Scroll to walk through it, hover a panel to light it, click to zoom in &mdash;
-        <a href="assets/art/process.png" target="_blank" rel="noopener">or open the full artwork</a></p>
-    </figcaption>
-  </figure>
-
-  <a class="btn chapter__cta" href="contact.html">Bring Your Car In <span aria-hidden="true">&rarr;</span></a>
+  <p class="manga__end reveal">&hellip;and every story deserves a fresh chapter.
+    <a class="btn" href="contact.html">Start Yours <span aria-hidden="true">&rarr;</span></a>
+  </p>
 </section>
 
 <section class="stats" aria-label="Shop statistics">
