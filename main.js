@@ -379,6 +379,119 @@
   var yr = document.getElementById('yr');
   if (yr) yr.textContent = new Date().getFullYear();
 
+  /* ---------------------------------------------------------
+     7c. SERVICE VIDEO MODAL CONTROLLER
+     --------------------------------------------------------- */
+  var svcModal = document.getElementById('svcModal');
+  if (svcModal) {
+    var modalVideo = document.getElementById('modalVideo');
+    var modalImage = document.getElementById('modalImage');
+    var modalTitle = document.getElementById('modalTitle');
+    var modalKicker = document.getElementById('modalKicker');
+    var modalDesc = document.getElementById('modalDesc');
+    var modalSpecs = document.getElementById('modalSpecs');
+    var modalSteps = document.getElementById('modalSteps');
+    var modalClose = document.getElementById('modalClose');
+    var modalDismiss = document.getElementById('modalDismiss');
+
+    function openSvcModal(row) {
+      if (!row) return;
+      var title = row.dataset.svcTitle || row.querySelector('h3')?.textContent || 'Service Details';
+      var kicker = row.dataset.svcKicker || row.querySelector('.kicker')?.textContent || 'TECHNIQUE';
+      var desc = row.dataset.svcDesc || row.querySelector('p:not(.kicker):not(.svcrow__sub)')?.textContent || '';
+      var facts = (row.dataset.svcFacts || '').split('|').filter(Boolean);
+      var videoSrc = row.dataset.svcVideo || '';
+      var imageSrc = row.dataset.svcImage || '';
+      var steps = (row.dataset.svcProcess || '').split('||').filter(Boolean);
+
+      if (modalTitle) modalTitle.textContent = title;
+      if (modalKicker) modalKicker.textContent = kicker;
+      if (modalDesc) modalDesc.textContent = desc;
+
+      if (modalSpecs) {
+        modalSpecs.innerHTML = '';
+        facts.forEach(function (f) {
+          var li = document.createElement('li');
+          li.textContent = f;
+          modalSpecs.appendChild(li);
+        });
+      }
+
+      if (modalSteps) {
+        modalSteps.innerHTML = '';
+        steps.forEach(function (step) {
+          var parts = step.split('::');
+          var li = document.createElement('li');
+          var h = document.createElement('b');
+          h.textContent = parts[0] || '';
+          var p = document.createElement('span');
+          p.textContent = parts[1] || '';
+          li.appendChild(h);
+          li.appendChild(p);
+          modalSteps.appendChild(li);
+        });
+      }
+
+      // Only the wash service has an actual matching clip; every other
+      // service falls back to its reference photo so we never show footage
+      // of the wrong technique.
+      if (videoSrc && modalVideo) {
+        if (modalVideo.src !== videoSrc && !modalVideo.src.endsWith(videoSrc)) {
+          modalVideo.src = videoSrc;
+        }
+        modalVideo.currentTime = 0;
+        modalVideo.hidden = false;
+        modalVideo.play().catch(function () {});
+        if (modalImage) modalImage.hidden = true;
+      } else {
+        if (modalVideo) { modalVideo.pause(); modalVideo.hidden = true; }
+        if (modalImage && imageSrc) {
+          modalImage.src = imageSrc;
+          modalImage.alt = title;
+          modalImage.hidden = false;
+        }
+      }
+
+      svcModal.classList.add('is-open');
+      svcModal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeSvcModal() {
+      svcModal.classList.remove('is-open');
+      svcModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (modalVideo) modalVideo.pause();
+    }
+
+    document.querySelectorAll('.svc-modal-trigger, .svcrow__shot').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        var row = btn.closest('.svcrow') || (btn.dataset.svc ? document.getElementById(btn.dataset.svc) : null);
+        if (row) openSvcModal(row);
+      });
+      btn.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          var row = btn.closest('.svcrow') || (btn.dataset.svc ? document.getElementById(btn.dataset.svc) : null);
+          if (row) openSvcModal(row);
+        }
+      });
+    });
+
+    if (modalClose) modalClose.addEventListener('click', closeSvcModal);
+    if (modalDismiss) modalDismiss.addEventListener('click', closeSvcModal);
+
+    svcModal.addEventListener('click', function (e) {
+      if (e.target === svcModal) closeSvcModal();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && svcModal.classList.contains('is-open')) closeSvcModal();
+    });
+  }
+
+
 
 
 
