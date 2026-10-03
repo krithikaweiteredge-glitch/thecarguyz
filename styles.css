@@ -394,26 +394,6 @@ a{color:inherit}
   .ba__handle i,.ba__tag{transition:none}
 }
 
-/* ===================== PRICING ===================== */
-.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.25rem;align-items:start}
-.tier{position:relative;border:1px solid var(--line);background:var(--surface);padding:2.2rem 1.8rem;display:flex;flex-direction:column;transition:border-color var(--t),transform var(--t)}
-.tier:hover{border-color:var(--accent);transform:translateY(-5px)}
-.tier--hot{border-color:var(--accent);background:linear-gradient(180deg,rgba(255,34,51,.09),transparent 40%),var(--surface)}
-.tier__flag{
-  position:absolute;top:-1px;right:-1px;margin:0;background:var(--accent);color:var(--on-accent);
-  padding:.5rem .9rem;font:800 .63rem/1 var(--body);letter-spacing:.2em;
-}
-.tier__rank{margin:0 0 .6rem;font:600 .68rem/1 var(--body);letter-spacing:.3em;color:var(--muted)}
-.tier h3{margin:0 0 .8rem;font:400 2.1rem/1 var(--display);text-transform:uppercase}
-.tier__price{margin:0 0 1.5rem;font:800 2.3rem/1 var(--body);color:var(--accent)}
-.tier__price em{font:600 .8rem/1 var(--body);font-style:normal;color:var(--muted);margin-left:.3rem}
-.tier ul{list-style:none;margin:0 0 2rem;padding:0;display:grid;gap:.75rem;flex:1}
-.tier li{position:relative;padding-left:1.7rem;color:var(--muted);font-size:.93rem}
-.tier li::before{
-  content:'';position:absolute;left:0;top:.45em;width:9px;height:9px;background:var(--accent);
-  clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);
-}
-
 /* ===================== QUOTES ===================== */
 .quotes{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem}
 .quote{margin:0;border-left:3px solid var(--accent);background:var(--surface);padding:2rem 1.7rem}
