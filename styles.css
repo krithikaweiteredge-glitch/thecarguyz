@@ -873,18 +873,22 @@ a{color:inherit}
   content:'';position:absolute;left:0;bottom:0;width:38px;height:2px;background:var(--accent);
 }
 .foot__col ul{list-style:none;margin:0;padding:0;display:grid;gap:.1rem}
-.foot__col ul a{display:inline-flex;align-items:center;gap:.5rem;padding-block:.35rem;text-decoration:none;color:var(--muted);font-size:.93rem;transition:color var(--t),gap var(--t)}
-.foot__col ul a::before{content:'\203A';color:var(--accent);font-weight:700}
-.foot__col ul a:hover{color:var(--fg);gap:.75rem}
+.foot__col ul:not(.foot__contact) a{display:inline-flex;align-items:center;gap:.5rem;padding-block:.35rem;text-decoration:none;color:var(--muted);font-size:.93rem;transition:color var(--t),gap var(--t)}
+.foot__col ul:not(.foot__contact) a::before{content:'\203A';color:var(--accent);font-weight:700}
+.foot__col ul:not(.foot__contact) a:hover{color:var(--fg);gap:.75rem}
 .foot__col p{margin:0 0 .65rem;color:var(--muted);font-size:.93rem;line-height:1.6}
-.foot__contact{list-style:none;margin:0;padding:0;display:grid;gap:1rem}
-.foot__contact li{display:flex;align-items:flex-start;gap:.85rem}
+.foot__contact{list-style:none;margin:0;padding:0;display:grid;gap:1.4rem}
+.foot__contact li{display:flex;align-items:flex-start;gap:.75rem}
 .foot__badge{
-  flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;
-  background:var(--accent);color:#fff;
+  flex:none;display:flex;align-items:center;justify-content:center;
+  width:19px;height:19px;margin-top:.15rem;color:var(--accent);
+  transition:color var(--t);
 }
-.foot__badge svg{width:16px;height:16px;fill:currentColor}
-.foot__contact a,.foot__contact span{color:var(--muted);font-size:.93rem;line-height:1.5;text-decoration:none}
+.foot__badge svg{display:block;width:19px;height:19px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.foot__contact li:hover .foot__badge{color:var(--fg)}
+.foot__contact a,.foot__contact span{
+  display:block;min-width:0;color:var(--muted);font-size:.92rem;line-height:1.5;text-decoration:none;
+}
 .foot__contact a:hover{color:var(--fg)}
 
 .vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
